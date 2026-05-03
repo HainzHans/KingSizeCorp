@@ -11,11 +11,11 @@ import {ImpressumPage} from './pages/impressum-page/impressum-page';
 import {AgbPage} from './pages/agb-page/agb-page';
 
 export const routes: Routes = [
-  { path: '', component: KingSizePage, canActivate: [adminGuard], },
-  { path: 'contact', component: ContactPage, canActivate: [adminGuard], },
-  { path: 'datenschutz', component: DataPrivacyPage, canActivate: [adminGuard], },
-  { path: 'impressum', component: ImpressumPage, canActivate: [adminGuard], },
-  { path: 'agb', component: AgbPage, canActivate: [adminGuard], },
+  { path: '', component: KingSizePage },
+  { path: 'contact', component: ContactPage},
+  { path: 'datenschutz', component: DataPrivacyPage},
+  { path: 'impressum', component: ImpressumPage},
+  { path: 'agb', component: AgbPage},
   { path: 'admin-login', component: AdminLoginComponent },
   {
     path: 'admin',

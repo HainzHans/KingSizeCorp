@@ -17,6 +17,7 @@ export class ProductCardComponent {
   icon        = input<string>('pi-box');
   badge       = input<string | null>(null);
   selected    = input<boolean>(false);
+  showInfo    = input<boolean>(false);
 
   select = output<void>();
 

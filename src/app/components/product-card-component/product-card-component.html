@@ -5,8 +5,16 @@
 >
   <div class="product-card__glow"></div>
 
-  <div class="product-card__icon">
-    <i [class]="'pi ' + icon()"></i>
+  <div style="display: flex; flex-direction: row; gap: 1.5rem;">
+
+    <div class="product-card__icon">
+      <i [class]="'pi ' + icon()"></i>
+    </div>
+    @if (showInfo()) {
+      <span class="product-card__desc" style="color: red;">
+      Derzeit kein {{ name() }}
+    </span>
+    }
   </div>
 
   @if (badge()) {

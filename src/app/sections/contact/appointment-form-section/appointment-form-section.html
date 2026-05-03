@@ -38,7 +38,7 @@
             icon="pi-chart-line"
             [features]="['Live Marktanalyse', 'Q&A in Echtzeit', 'Aufzeichnung inklusive']"
             [selected]="selectedProduct() === 'livetrading'"
-            (select)="selectProduct('livetrading')"
+            [showInfo]="true"
           ></app-product-card>
 
           <app-product-card
