@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "node set-env.js && ng build --configuration production",
+    "build": "mkdir -p src/environments && node -e \"const fs = require('fs'); fs.writeFileSync('./src/environments/environment.ts', 'export const environment = { production: true, supabaseUrl: \\'' + process.env.SUPABASE_URL + '\\', supabaseKey: \\'' + process.env.SUPABASE_KEY + '\\' };');\" && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
