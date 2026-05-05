@@ -169,11 +169,13 @@
         @if (!loadingSlots()) {
           <div class="slots-grid">
             @for (slot of availableSlots(); track slot.id) {
-              <app-appointment-slot-card
-                [slot]="slot"
-                [selected]="selectedSlot()?.id === slot.id"
-                (select)="selectSlot($event)"
-              ></app-appointment-slot-card>
+              @if (isSlotInFuture(slot.date)) {
+                <app-appointment-slot-card
+                  [slot]="slot"
+                  [selected]="selectedSlot()?.id === slot.id"
+                  (select)="selectSlot($event)"
+                ></app-appointment-slot-card>
+              }
             } @empty {
               <div class="slots-empty">
                 <i class="pi pi-calendar-times"></i>

@@ -149,4 +149,9 @@ export class AppointmentFormSection implements OnInit {
       }
     }
   }
+
+  isSlotInFuture(date: string) {
+    return new Date(date) > new Date();
+  }
+
 }
