@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 
 export const supabase = createClient(
-  import.meta.env.NG_APP_SUPABASE_URL,
-  import.meta.env.NG_APP_SUPABASE_PUBLIC_KEY,
+  'https://sjmfbdnzsktncbwqafjq.supabase.co',
+  'sb_publishable_jd7pQ3MgQBhs3vWTx0sweA__cq9BpI2'
 );
