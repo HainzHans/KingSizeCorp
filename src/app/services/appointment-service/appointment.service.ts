@@ -86,6 +86,7 @@ export class AppointmentService {
     const { error } = await supabase
       .from('appointments')
       .delete()
+      .eq('status', 'available')
       .eq('id', id);
 
     if (error) throw error;

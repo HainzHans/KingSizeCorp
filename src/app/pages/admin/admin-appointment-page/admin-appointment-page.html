@@ -138,27 +138,30 @@
             </div>
           }
           @for (appt of mentoringAppointments; track appt.id) {
-            <div class="appt-card appt-card--mentoring">
-              <div class="appt-card__accent"></div>
-              <div class="appt-card__body">
-                <div class="appt-card__date">
-                  <i class="pi pi-calendar"></i>
-                  {{ appt.date | formatDate }}
+            @if (isAppointmentInFuture(appt)) {
+              <div class="appt-card appt-card--mentoring">
+                <div class="appt-card__accent"></div>
+                <div class="appt-card__body">
+                  <div class="appt-card__date">
+                    <i class="pi pi-calendar"></i>
+                    {{ appt.date | formatDate }}
+                  </div>
+                  <div class="appt-card__time">
+                    <i class="pi pi-clock"></i>
+                    {{ appt.time | slice:0:5 }} Uhr
+                  </div>
                 </div>
-                <div class="appt-card__time">
-                  <i class="pi pi-clock"></i>
-                  {{ appt.time | slice:0:5 }} Uhr
+                <div class="appt-card__actions">
+                  <button class="action-btn action-btn--edit" (click)="openEdit(appt)" title="Bearbeiten">
+                    <i class="pi pi-pencil"></i>
+                  </button>
+                  <button class="action-btn action-btn--delete" (click)="confirmDelete(appt, $event)" title="Löschen">
+                    <i class="pi pi-trash"></i>
+                  </button>
                 </div>
               </div>
-              <div class="appt-card__actions">
-                <button class="action-btn action-btn--edit" (click)="openEdit(appt)" title="Bearbeiten">
-                  <i class="pi pi-pencil"></i>
-                </button>
-                <button class="action-btn action-btn--delete" (click)="confirmDelete(appt, $event)" title="Löschen">
-                  <i class="pi pi-trash"></i>
-                </button>
-              </div>
-            </div>
+            }
+
           }
         </div>
       </div>

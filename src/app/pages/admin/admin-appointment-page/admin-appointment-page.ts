@@ -63,7 +63,9 @@ export class AdminAppointmentPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadAppointments();
+    this.loadAppointments().then(() => {
+      this.deleteOldAppointments()
+    });
   }
 
   // ── Tab Switch ───────────────────────────────────────────
@@ -95,6 +97,14 @@ export class AdminAppointmentPage implements OnInit {
     }
   }
 
+  private async deleteOldAppointments() {
+    this.mentoringAppointments.forEach((appointment) => {
+      if (new Date(appointment.date) < new Date() && appointment.status === 'available') {
+        this.appointmentService.delete(appointment.id)
+      }
+    })
+  }
+
   private async loadBooked() {
     this.loading.set(true);
     try {
@@ -115,11 +125,17 @@ export class AdminAppointmentPage implements OnInit {
     return type === 'livetrading' ? 'LiveTrading' : 'Mentoring';
   }
 
+  private getDefaultTime(): Date {
+    const d = new Date();
+    d.setHours(14, 0, 0, 0);
+    return d;
+  }
+
   // ── Open dialog ──────────────────────────────────────────
   openCreate(type: AppointmentType) {
     this.dialogType          = type;
     this.dialogDate          = null;
-    this.dialogTime          = null;
+    this.dialogTime          = this.getDefaultTime();
     this.dialogStripePriceId = null;
     this.editingId           = null;
     this.editMode.set(false);
@@ -250,5 +266,9 @@ export class AdminAppointmentPage implements OnInit {
     return this.editMode()
       ? `${this.typeLabel(this.dialogType)}-Termin bearbeiten`
       : `${this.typeLabel(this.dialogType)}-Termin erstellen`;
+  }
+
+  isAppointmentInFuture(appointment: Appointment) {
+    return new Date(appointment.date) > new Date();
   }
 }
