@@ -31,12 +31,6 @@
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.development.ts",
-                  "with": "src/environments/environment.ts"
-                }
-              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -55,12 +49,6 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.development.ts"
-                }
-              ]
             }
           },
           "defaultConfiguration": "production"
