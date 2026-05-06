@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /admin-login
 
-Sitemap: https://kingsize-corp.de/sitemap.xml
+Sitemap: https://www.kingsizetrading.de/sitemap.xml
