@@ -9,6 +9,7 @@ import {HeroSection} from "../../sections/shared/hero-section/hero-section";
 import {BrandsAutoSliderComponent} from '../../components/brands-auto-slider-component/brands-auto-slider-component';
 import {HeaderSection} from '../../sections/shared/header-section/header-section';
 import {FaqSection} from '../../sections/king-size/faq-section/faq-section';
+import {CommunitySection} from '../../sections/king-size/community-section/community-section';
 
 @Component({
   selector: 'app-king-size-page',
@@ -22,7 +23,8 @@ import {FaqSection} from '../../sections/king-size/faq-section/faq-section';
     HeroSection,
     BrandsAutoSliderComponent,
     HeaderSection,
-    FaqSection
+    FaqSection,
+    CommunitySection
   ],
   templateUrl: './king-size-page.html',
   styleUrl: './king-size-page.css',

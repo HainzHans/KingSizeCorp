@@ -1,0 +1,114 @@
+<section class="community-section">
+  <div class="container">
+
+    <div class="community-eyebrow">
+      <app-small-dot-component></app-small-dot-component>
+      <span class="grey-text">Neu</span>
+    </div>
+
+    <div class="community-layout">
+
+      <!-- LEFT: Text Content -->
+      <div class="community-text">
+        <h2>
+          Dein Einstieg
+          <br>
+          in die Welt des
+          <br>
+          <h2 class="green-text">Tradings.</h2>
+        </h2>
+        <p class="grey-text community-description">
+          Noch nicht bereit für 1:1 Mentoring? Kein Problem.
+          Die KingSize Community ist dein günstiger Einstieg —
+          mit echten Insights, wöchentlichen Analysen und
+          direktem Zugang zur Community.
+        </p>
+
+        <div class="community-features">
+          <div class="community-feature-item">
+            <i class="pi pi-chart-line"></i>
+            <span>Wöchentliche Marktanalysen</span>
+          </div>
+          <div class="community-feature-item">
+            <i class="pi pi-comments"></i>
+            <span>Zugang zur privaten Gruppe</span>
+          </div>
+          <div class="community-feature-item">
+            <i class="pi pi-video"></i>
+            <span>Exklusive Lernvideos</span>
+          </div>
+          <div class="community-feature-item">
+            <i class="pi pi-bell"></i>
+            <span>Setup-Alerts & Trade-Ideen</span>
+          </div>
+        </div>
+
+        <app-king-size-button
+          [target]="'/contact'"
+          [btnText]="'Community beitreten'"
+        ></app-king-size-button>
+      </div>
+
+      <!-- RIGHT: Pricing Card -->
+      <div class="community-card-wrapper">
+        <div class="community-badge">Einstieg</div>
+        <div class="community-card">
+
+          <div class="community-card-header">
+            <span class="community-card-label grey-text">KingSize Community</span>
+            <div class="community-price">
+              <span class="community-price-amount">€ 49</span>
+              <span class="community-price-unit grey-text">/ Monat</span>
+            </div>
+            <span class="grey-text community-price-cancel">Jederzeit kündbar</span>
+          </div>
+
+          <div class="community-card-divider"></div>
+
+          <ul class="community-card-list">
+            <li>
+              <i class="pi pi-check community-check-icon"></i>
+              <span>Wöchentliche Live-Analyse jeden Sonntag</span>
+            </li>
+            <li>
+              <i class="pi pi-check community-check-icon"></i>
+              <span>Private WhatsApp / Telegram Gruppe</span>
+            </li>
+            <li>
+              <i class="pi pi-check community-check-icon"></i>
+              <span>Lern-Bibliothek mit Video-Material</span>
+            </li>
+            <li>
+              <i class="pi pi-check community-check-icon"></i>
+              <span>Trading-Setups & Markt-Alerts</span>
+            </li>
+            <li>
+              <i class="pi pi-check community-check-icon"></i>
+              <span>Direkter Austausch mit Marcel</span>
+            </li>
+          </ul>
+
+          <div class="community-card-divider"></div>
+
+          <div class="community-compare">
+            <span class="grey-text compare-label">Im Vergleich</span>
+            <div class="compare-row">
+              <span class="compare-tier community-tier-active">Community</span>
+              <span class="compare-price green-text">€ 49 / Monat</span>
+            </div>
+            <div class="compare-row compare-row-muted">
+              <span class="compare-tier">Live Trading</span>
+              <span class="compare-price grey-text">€ 150 / Session</span>
+            </div>
+            <div class="compare-row compare-row-muted">
+              <span class="compare-tier">Mentoring</span>
+              <span class="compare-price grey-text">€ 1.200 / LifeTime</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
