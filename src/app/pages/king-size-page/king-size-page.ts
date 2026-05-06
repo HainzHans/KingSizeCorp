@@ -9,7 +9,7 @@ import {HeroSection} from "../../sections/shared/hero-section/hero-section";
 import {BrandsAutoSliderComponent} from '../../components/brands-auto-slider-component/brands-auto-slider-component';
 import {HeaderSection} from '../../sections/shared/header-section/header-section';
 import {FaqSection} from '../../sections/king-size/faq-section/faq-section';
-import {CommunitySection} from '../../sections/king-size/community-section/community-section';
+
 import {SeoService} from '../../services/seo-service/seo-service';
 
 @Component({
@@ -25,7 +25,6 @@ import {SeoService} from '../../services/seo-service/seo-service';
     BrandsAutoSliderComponent,
     HeaderSection,
     FaqSection,
-    CommunitySection
   ],
   templateUrl: './king-size-page.html',
   styleUrl: './king-size-page.css',
