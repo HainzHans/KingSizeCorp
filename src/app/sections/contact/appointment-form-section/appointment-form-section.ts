@@ -16,7 +16,7 @@ import { GlowButtonComponent } from '../../../components/buttons/glow-button-com
 // Models & Services
 import { Appointment, AppointmentType } from '../../../models/appointment.model';
 import { AppointmentService } from '../../../services/appointment-service/appointment.service';
-import {BookingService} from '../../../services/booking-service/booking.service';
+import { BookingService } from '../../../services/booking-service/booking.service';
 
 @Component({
   selector: 'app-appointment-form-section',
@@ -42,8 +42,11 @@ export class AppointmentFormSection implements OnInit {
   selectedSlot    = signal<Appointment | undefined>(undefined);
   availableSlots  = signal<Appointment[]>([]);
   loadingSlots    = signal<boolean>(false);
-  bookingStatus = signal<'success' | 'cancel' | null>(null);
-  submitting = signal(false);
+  bookingStatus   = signal<'success' | 'cancel' | null>(null);
+  submitting      = signal(false);
+
+  // Ob Community gewählt wurde (überspringt Schritt 3 – Terminwahl)
+  isCommunity     = signal<boolean>(false);
 
   steps = ['Produkt', 'Kontakt', 'Termin', 'Übersicht'];
 
@@ -53,7 +56,7 @@ export class AppointmentFormSection implements OnInit {
     private fb:                 FormBuilder,
     private appointmentService: AppointmentService,
     private bookingService:     BookingService,
-    private route:              ActivatedRoute,  // ← neu
+    private route:              ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -63,7 +66,6 @@ export class AppointmentFormSection implements OnInit {
       email:    ['', [Validators.required, Validators.email]],
     });
 
-    // Status aus URL lesen wenn User von Stripe zurückkommt
     const status = this.route.snapshot.queryParamMap.get('status');
     if (status === 'success') {
       this.bookingStatus.set('success');
@@ -77,9 +79,14 @@ export class AppointmentFormSection implements OnInit {
   /* ── Navigation ─────────────────────────────────────────── */
   nextStep(): void {
     if (this.currentStep() < 5) {
+      // Community überspringt Schritt 3 (Terminwahl) → direkt zur Übersicht
+      if (this.currentStep() === 2 && this.isCommunity()) {
+        this.currentStep.set(4);
+        return;
+      }
+
       this.currentStep.update(s => s + 1);
 
-      // Wenn auf Schritt 3 gewechselt wird → Termine laden
       if (this.currentStep() === 3 && this.selectedProduct()) {
         this.loadSlots(this.selectedProduct()!);
       }
@@ -88,18 +95,23 @@ export class AppointmentFormSection implements OnInit {
 
   prevStep(): void {
     if (this.currentStep() > 1) {
+      // Community: von Schritt 4 zurück zu Schritt 2 (nicht 3)
+      if (this.currentStep() === 4 && this.isCommunity()) {
+        this.currentStep.set(2);
+        return;
+      }
       this.currentStep.update(s => s - 1);
     }
   }
 
   /* ── Selections ─────────────────────────────────────────── */
   selectProduct(product: AppointmentType): void {
-    // Slot zurücksetzen wenn Produkt wechselt
     if (this.selectedProduct() !== product) {
       this.selectedSlot.set(undefined);
       this.availableSlots.set([]);
     }
     this.selectedProduct.set(product);
+    this.isCommunity.set(product === 'community');
   }
 
   selectSlot(slot: Appointment): void {
@@ -108,6 +120,8 @@ export class AppointmentFormSection implements OnInit {
 
   /* ── Load slots ─────────────────────────────────────────── */
   protected async loadSlots(type: AppointmentType): Promise<void> {
+    if (type === 'community') return;
+
     this.loadingSlots.set(true);
     this.selectedSlot.set(undefined);
     try {
@@ -120,25 +134,37 @@ export class AppointmentFormSection implements OnInit {
     }
   }
 
-
   /* ── Submit ─────────────────────────────────────────────── */
   async submitBooking(): Promise<void> {
-    if (this.contactForm.invalid || !this.selectedProduct() || !this.selectedSlot()) return;
+    if (this.contactForm.invalid || !this.selectedProduct()) return;
+
+    // Community braucht keinen Slot
+    if (!this.isCommunity() && !this.selectedSlot()) return;
 
     this.submitting.set(true);
 
     try {
-      const url = await this.bookingService.createCheckout({
-        appointment_id: this.selectedSlot()!.id,
-        customer_name:  this.contactForm.value.fullName,
-        customer_email: this.contactForm.value.email,
-        customer_phone: this.contactForm.value.phone,
-      });
+      let url: string;
+
+      if (this.isCommunity()) {
+        url = await this.bookingService.createCommunityCheckout({
+          customer_name:  this.contactForm.value.fullName,
+          customer_email: this.contactForm.value.email,
+          customer_phone: this.contactForm.value.phone,
+        });
+      } else {
+        url = await this.bookingService.createCheckout({
+          appointment_id: this.selectedSlot()!.id,
+          customer_name:  this.contactForm.value.fullName,
+          customer_email: this.contactForm.value.email,
+          customer_phone: this.contactForm.value.phone,
+        });
+      }
 
       window.location.href = url;
 
     } catch (err: any) {
-      this.submitting.set(false); // ← nur bei Fehler zurücksetzen
+      this.submitting.set(false);
       if (err?.status === 409) {
         alert('Dieser Termin wurde leider gerade von jemand anderem gebucht. Bitte wähle einen anderen Termin.');
         this.currentStep.set(3);
@@ -154,4 +180,17 @@ export class AppointmentFormSection implements OnInit {
     return new Date(date) > new Date();
   }
 
+  /* ── Computed Helpers ───────────────────────────────────── */
+  get stepLabels(): string[] {
+    return this.isCommunity()
+      ? ['Produkt', 'Kontakt', 'Übersicht']
+      : ['Produkt', 'Kontakt', 'Termin', 'Übersicht'];
+  }
+
+  // Schritt-Nummer für Anzeige (Community zeigt 1,2,3 statt 1,2,4)
+  get displayStep(): number {
+    if (!this.isCommunity()) return this.currentStep();
+    if (this.currentStep() <= 2) return this.currentStep();
+    return 3; // Schritt 4 wird als "3" angezeigt bei Community
+  }
 }

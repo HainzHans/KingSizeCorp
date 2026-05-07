@@ -34,11 +34,12 @@
     <span class="summary-block__value">{{ email() }}</span>
   </div>
 
-  <div class="summary-block">
+  @if (slot()) {
+    <div class="summary-block">
     <span class="summary-block__label">
       <i class="pi pi-calendar"></i> Termin
     </span>
-    <span class="summary-block__value">
+      <span class="summary-block__value">
       @if (slot()?.date && slot()?.time) {
         <span class="green-text">
           {{ slot()!.date | formatDate}}
@@ -48,5 +49,7 @@
       }
 
     </span>
-  </div>
+    </div>
+  }
+
 </div>

@@ -3,11 +3,11 @@
 
     <!-- Step Indicator -->
     <div class="step-indicator">
-      @for (step of steps; let i = $index; track step) {
+      @for (step of stepLabels; let i = $index; track step) {
         <div
           class="step-item"
-          [class.step-item--active]="currentStep() === i + 1"
-          [class.step-item--done]="currentStep() > i + 1"
+          [class.step-item--active]="displayStep === i + 1"
+          [class.step-item--done]="displayStep > i + 1"
         >
           <div class="step-circle">
             <span class="step-number">{{ i + 1 }}</span>
@@ -29,6 +29,7 @@
           <h2 class="booking-card__title">Was möchtest du buchen?</h2>
         </div>
 
+        <!-- Obere Reihe: Live Trading + Mentoring -->
         <div class="product-grid">
           <app-product-card
             name="Live Trading"
@@ -51,6 +52,44 @@
             [selected]="selectedProduct() === 'mentoring'"
             (select)="selectProduct('mentoring')"
           ></app-product-card>
+        </div>
+
+        <!-- Community-Card: volle Breite, kompakter -->
+        <div
+          class="community-card"
+          [class.community-card--selected]="selectedProduct() === 'community'"
+          (click)="selectProduct('community')"
+        >
+          <div class="community-card__glow"></div>
+
+          <div class="community-card__left">
+            <div class="community-card__icon">
+              <i class="pi pi-telegram"></i>
+            </div>
+            <div class="community-card__info">
+              <div class="community-card__top">
+                <h3 class="community-card__name">KingSize Community</h3>
+                <div class="community-card__badge">Neu</div>
+              </div>
+              <p class="community-card__desc">
+                Zugang zur exklusiven KingSize Community - mit täglichen Marktanalysen, verständlich aufbereiteten Finanz‑ und Wirtschaftsnews
+                sowie fundiertem Krypto‑Know‑how.
+              </p>
+              <ul class="community-card__features">
+                <li><i class="pi pi-check-circle"></i> Monatlich kündbar</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="community-card__right">
+            <div class="community-card__price">
+              <span class="community-card__price-amount">€ 49</span>
+              <span class="community-card__price-unit">/ Monat</span>
+            </div>
+            <div class="community-card__select-indicator">
+              <i class="pi pi-check"></i>
+            </div>
+          </div>
         </div>
 
         <div class="booking-card__actions">
@@ -139,7 +178,7 @@
             (onClick)="prevStep()"
           ></app-glow-button>
           <app-glow-button
-            label="Termin wählen"
+            [label]="isCommunity() ? 'Zur Übersicht' : 'Termin wählen'"
             icon="pi-arrow-right"
             iconPos="right"
             [disabled]="contactForm.invalid"
@@ -149,15 +188,14 @@
       </div>
     }
 
-    <!-- Step 3: Termin wählen -->
-    @if (currentStep() === 3) {
+    <!-- Step 3: Termin wählen (nur für Mentoring / Live Trading) -->
+    @if (currentStep() === 3 && !isCommunity()) {
       <div class="booking-card">
         <div class="booking-card__header">
           <span class="booking-card__eyebrow">Schritt 3</span>
           <h2 class="booking-card__title">Freien Termin wählen</h2>
         </div>
 
-        <!-- Ladezustand -->
         @if (loadingSlots()) {
           <div class="slots-loading">
             <i class="pi pi-spin pi-spinner"></i>
@@ -165,7 +203,6 @@
           </div>
         }
 
-        <!-- Termine -->
         @if (!loadingSlots()) {
           <div class="slots-grid">
             @for (slot of availableSlots(); track slot.id) {
@@ -207,18 +244,22 @@
     @if (currentStep() === 4) {
       <div class="booking-card booking-card--summary">
         <div class="booking-card__header">
-          <span class="booking-card__eyebrow">Schritt 4</span>
+          <span class="booking-card__eyebrow">{{ isCommunity() ? 'Schritt 3' : 'Schritt 4' }}</span>
           <h2 class="booking-card__title">Deine Buchungsübersicht</h2>
         </div>
-
-        <app-booking-summary
-          [product]="selectedProduct()"
-          [fullName]="contactForm.get('fullName')?.value"
-          [phone]="contactForm.get('phone')?.value"
-          [email]="contactForm.get('email')?.value"
-          [slot]="selectedSlot()"
-        ></app-booking-summary>
-
+          <app-booking-summary
+            [product]="selectedProduct()"
+            [fullName]="contactForm.get('fullName')?.value"
+            [phone]="contactForm.get('phone')?.value"
+            [email]="contactForm.get('email')?.value"
+            [slot]="selectedSlot()"
+          ></app-booking-summary>
+          @if (isCommunity()) {
+            <p class="community-hint">
+              <i class="pi pi-info-circle"></i>
+              Nach erfolgreicher Zahlung erhältst du per E-Mail den Telegram-Einladungslink. Das Abo ist monatlich kündbar.
+            </p>
+          }
         <div class="booking-card__actions">
           <app-glow-button
             label="Zurück"
@@ -227,7 +268,7 @@
             (onClick)="prevStep()"
           ></app-glow-button>
           <app-glow-button
-            label="Jetzt buchen"
+            [label]="isCommunity() ? 'Jetzt abonnieren' : 'Jetzt buchen'"
             [icon]="submitting() ? 'pi-spin pi-spinner' : 'pi-check'"
             iconPos="right"
             [disabled]="submitting()"
@@ -237,7 +278,7 @@
       </div>
     }
 
-    <!-- Step 5: Erfolgreich bezahlt -->
+    <!-- Step 5: Erfolgreich -->
     @if (currentStep() === 5 && bookingStatus() === 'success') {
       <div class="booking-card booking-card--success">
         <div class="success-animation">
@@ -246,10 +287,14 @@
             <i class="pi pi-check"></i>
           </div>
         </div>
-        <h2 class="success-title">Buchung bestätigt!</h2>
+        <h2 class="success-title">{{ isCommunity() ? 'Willkommen in der Community!' : 'Buchung bestätigt!' }}</h2>
         <p class="success-text">
-          Du erhältst in Kürze eine Bestätigungs-E-Mail.
-          Ich freue mich auf dich!
+          @if (isCommunity()) {
+            Du erhältst in Kürze eine E-Mail mit deinem <strong>Telegram-Einladungslink</strong>. Wir freuen uns auf dich!
+          } @else {
+            Du erhältst in Kürze eine Bestätigungs-E-Mail.
+              Ich freue mich auf dich!
+          }
         </p>
         <app-glow-button
           label="Zurück zur Startseite"
@@ -265,7 +310,9 @@
         <h2 class="cancel-title">Zahlung abgebrochen</h2>
         <p class="cancel-text">
           Der Bezahlvorgang wurde abgebrochen.
-          Der Termin wird in Kürze automatisch wieder freigegeben.
+          @if (!isCommunity()) {
+            Der Termin wird in Kürze automatisch wieder freigegeben.
+          }
         </p>
         <div class="booking-card__actions">
           <app-glow-button

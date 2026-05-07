@@ -19,11 +19,28 @@ export interface CreateBookingPayload {
   customer_phone:  string;
 }
 
+export interface CreateCommunityBookingPayload {
+  customer_name:  string;
+  customer_email: string;
+  customer_phone: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class BookingService {
 
   async createCheckout(payload: CreateBookingPayload): Promise<string> {
     const { data, error } = await supabase.functions.invoke('create-checkout', {
+      body: payload,
+    });
+
+    if (error) throw error;
+    if (!data?.url) throw new Error('Keine Checkout-URL erhalten.');
+
+    return data.url as string;
+  }
+
+  async createCommunityCheckout(payload: CreateCommunityBookingPayload): Promise<string> {
+    const { data, error } = await supabase.functions.invoke('create-community-checkout', {
       body: payload,
     });
 

@@ -1,4 +1,4 @@
-export type AppointmentType = 'livetrading' | 'mentoring';
+export type AppointmentType = 'livetrading' | 'mentoring' | 'community';
 export type AppointmentStatus = 'available' | 'booked';
 
 export interface Appointment {
