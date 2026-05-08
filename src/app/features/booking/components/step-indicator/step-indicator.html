@@ -1,0 +1,18 @@
+<div class="step-indicator">
+  @for (step of steps(); let i = $index; track step) {
+    <div
+      class="step-item"
+      [class.step-item--active]="currentStep() === i + 1"
+      [class.step-item--done]="currentStep() > i + 1"
+    >
+      <div class="step-circle">
+        <span class="step-number">{{ i + 1 }}</span>
+        <span class="step-check">
+          <i class="pi pi-check"></i>
+        </span>
+      </div>
+      <span class="step-label">{{ step }}</span>
+      <div class="step-line"></div>
+    </div>
+  }
+</div>

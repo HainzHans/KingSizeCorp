@@ -21,97 +21,6 @@
    STEP INDICATOR
    ============================================ */
 
-.step-indicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  flex-wrap: nowrap;
-}
-
-.step-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  gap: 0.5rem;
-}
-
-.step-circle {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.04);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  transition: all 0.4s ease;
-  backdrop-filter: blur(8px);
-}
-
-.step-number {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.35);
-  transition: all 0.3s ease;
-}
-
-.step-check {
-  position: absolute;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  color: var(--primary-white);
-  font-size: 0.85rem;
-}
-
-.step-label {
-  font-size: 0.72rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.3);
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  transition: color 0.3s ease;
-}
-
-.step-line {
-  width: 60px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-  margin: 0 0.5rem;
-  margin-bottom: 1.35rem;
-  transition: background 0.4s ease;
-  flex-shrink: 0;
-}
-
-/* Active step */
-.step-item--active .step-circle {
-  border-color: var(--primary-green);
-}
-.step-item--active .step-number {
-  color: var(--primary-green);
-}
-.step-item--active .step-label {
-  color: var(--primary-grey);
-}
-
-/* Done step */
-.step-item--done .step-circle {
-  border-color: var(--primary-green);
-}
-.step-item--done .step-number {
-  opacity: 0;
-}
-.step-item--done .step-check {
-  opacity: 1;
-}
-.step-item--done .step-label {
-  color: rgba(255, 255, 255, 0.45);
-}
-.step-item--done + .step-line,
-
 
 /* ============================================
    BOOKING CARD (shared shell)
@@ -190,103 +99,13 @@
    STEP 2 – CONTACT FORM
    ============================================ */
 
-.contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
 
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
-}
-
-@media (max-width: 600px) {
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-}
-
-.form-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.form-label {
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.input-wrapper {
-  position: relative;
-}
-
-.input-wrapper .pi {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 0.9rem;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.booking-input {
-  width: 100%;
-  padding: 0.85rem 1rem 0.85rem 2.75rem !important;
-  background: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 10px !important;
-  color: #fff !important;
-  font-size: 0.9rem !important;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
-  box-sizing: border-box;
-}
-
-.booking-input::placeholder {
-  color: rgba(255, 255, 255, 0.25) !important;
-}
-
-.booking-input:focus {
-  border-color: var(--primary-green) !important;
-  outline: none !important;
-}
-
-.booking-input.ng-invalid {
-  border-color: rgba(255, 80, 80, 0.5) !important;
-}
-
-.form-error {
-  font-size: 0.75rem;
-  color: #ff6b6b;
-  margin-top: 0.15rem;
-}
 
 /* ============================================
    STEP 3 – TIME SLOTS
    ============================================ */
 
-.slots-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
-  margin-bottom: 0.5rem;
-}
 
-@media (max-width: 560px) {
-  .slots-grid {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 0.75rem;
-    margin-bottom: 0.5rem;
-  }
-}
 
 /* ============================================
    STEP 4 – SUMMARY
@@ -312,73 +131,7 @@
    STEP 5 – SUCCESS
    ============================================ */
 
-.booking-card--success {
-  text-align: center;
-  padding: 4rem 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.25rem;
-}
 
-.success-animation {
-  position: relative;
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.success-ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 2px solid var(--primary-green);
-  animation: ring-pulse 2s ease-in-out infinite;
-}
-
-@keyframes ring-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.6; }
-  50% { transform: scale(1.15); opacity: 0.2; }
-}
-
-.success-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: linear-gradient(var(--primary-green));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.6rem;
-  color: white;
-  animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-@keyframes pop-in {
-  from { transform: scale(0.4); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
-}
-
-.success-title {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin: 0;
-}
-
-.success-text {
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.5);
-  max-width: 400px;
-  line-height: 1.7;
-  margin: 0;
-}
-
-.success-text strong {
-  color: rgba(255, 255, 255, 0.8);
-}
 
 /* ============================================
    BUTTONS

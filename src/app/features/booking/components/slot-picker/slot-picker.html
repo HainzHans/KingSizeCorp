@@ -1,0 +1,25 @@
+@if (loading()) {
+  <div class="slots-loading">
+    <i class="pi pi-spin pi-spinner"></i>
+    <p>Termine werden geladen …</p>
+  </div>
+}
+
+@if (!loading()) {
+  <div class="slots-grid">
+    @for (slot of slots(); track slot.id) {
+      @if (isSlotInFuture(slot.date)) {
+        <app-appointment-slot-card
+          [slot]="slot"
+          [selected]="selectedSlot()?.id === slot.id"
+          (select)="slotSelected.emit($event)"
+        ></app-appointment-slot-card>
+      }
+    } @empty {
+      <div class="slots-empty">
+        <i class="pi pi-calendar-times"></i>
+        <p>Aktuell sind keine Termine verfügbar. Bitte kontaktiere uns direkt.</p>
+      </div>
+    }
+  </div>
+}

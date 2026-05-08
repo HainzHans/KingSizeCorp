@@ -9,14 +9,17 @@ import { InputTextModule } from 'primeng/inputtext';
 
 // Components
 import { ProductCardComponent } from '../../components/product-card-component/product-card-component';
-import { AppointmentSlotCardComponent } from '../../components/appointment-slot-card-component/appointment-slot-card-component';
 import { BookingSummaryComponent } from '../../components/booking-summary-component/booking-summary-component';
 import { GlowButtonComponent } from '../../../../shared/components/glow-button-component/glow-button-component';
 
 // Models & Services
 import { Appointment, AppointmentType } from '../../../../shared/models/appointment.model';
 import { AppointmentService } from '../../services/appointment-service/appointment.service';
-import { BookingService } from '../../services/booking-service/booking.service';
+import {StepIndicator} from '../../components/step-indicator/step-indicator';
+import {SlotPicker} from '../../components/slot-picker/slot-picker';
+import {BookingResult} from '../../components/booking-result/booking-result';
+import {ContactForm} from '../../components/contact-form/contact-form';
+import {CheckoutService} from '../../services/checkout-service/checkout.service';
 
 @Component({
   selector: 'app-appointment-form-section',
@@ -27,9 +30,12 @@ import { BookingService } from '../../services/booking-service/booking.service';
     ButtonModule,
     InputTextModule,
     ProductCardComponent,
-    AppointmentSlotCardComponent,
     BookingSummaryComponent,
     GlowButtonComponent,
+    StepIndicator,
+    SlotPicker,
+    BookingResult,
+    ContactForm,
   ],
   templateUrl: './appointment-form-section.html',
   styleUrls: ['./appointment-form-section.css'],
@@ -53,19 +59,12 @@ export class AppointmentFormSection implements OnInit {
   contactForm!: FormGroup;
 
   constructor(
-    private fb:                 FormBuilder,
     private appointmentService: AppointmentService,
-    private bookingService:     BookingService,
+    private checkoutService:    CheckoutService,
     private route:              ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    this.contactForm = this.fb.group({
-      fullName: ['', [Validators.required, Validators.minLength(3)]],
-      phone:    ['', [Validators.required, Validators.pattern(/^\+?[\d\s\-()]{7,20}$/)]],
-      email:    ['', [Validators.required, Validators.email]],
-    });
-
     const status = this.route.snapshot.queryParamMap.get('status');
     if (status === 'success') {
       this.bookingStatus.set('success');
@@ -134,6 +133,10 @@ export class AppointmentFormSection implements OnInit {
     }
   }
 
+  onFormReady(form: FormGroup): void {
+    this.contactForm = form;
+  }
+
   /* ── Submit ─────────────────────────────────────────────── */
   async submitBooking(): Promise<void> {
     if (this.contactForm.invalid || !this.selectedProduct()) return;
@@ -147,13 +150,13 @@ export class AppointmentFormSection implements OnInit {
       let url: string;
 
       if (this.isCommunity()) {
-        url = await this.bookingService.createCommunityCheckout({
+        url = await this.checkoutService.createCommunityCheckout({
           customer_name:  this.contactForm.value.fullName,
           customer_email: this.contactForm.value.email,
           customer_phone: this.contactForm.value.phone,
         });
       } else {
-        url = await this.bookingService.createCheckout({
+        url = await this.checkoutService.createCheckout({
           appointment_id: this.selectedSlot()!.id,
           customer_name:  this.contactForm.value.fullName,
           customer_email: this.contactForm.value.email,

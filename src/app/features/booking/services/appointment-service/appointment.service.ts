@@ -91,4 +91,16 @@ export class AppointmentService {
 
     if (error) throw error;
   }
+
+  async deleteExpired(): Promise<void> {
+    const today = new Date().toISOString().split('T')[0];
+
+    const { error } = await supabase
+      .from('appointments')
+      .delete()
+      .eq('status', 'available')
+      .lt('date', today);
+
+    if (error) throw error;
+  }
 }

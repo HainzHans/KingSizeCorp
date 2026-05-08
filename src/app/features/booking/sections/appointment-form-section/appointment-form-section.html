@@ -2,24 +2,10 @@
   <div class="container">
 
     <!-- Step Indicator -->
-    <div class="step-indicator">
-      @for (step of stepLabels; let i = $index; track step) {
-        <div
-          class="step-item"
-          [class.step-item--active]="displayStep === i + 1"
-          [class.step-item--done]="displayStep > i + 1"
-        >
-          <div class="step-circle">
-            <span class="step-number">{{ i + 1 }}</span>
-            <span class="step-check">
-              <i class="pi pi-check"></i>
-            </span>
-          </div>
-          <span class="step-label">{{ step }}</span>
-          <div class="step-line"></div>
-        </div>
-      }
-    </div>
+    <app-step-indicator
+      [steps]="steps"
+      [currentStep]="currentStep()"
+    ></app-step-indicator>
 
     <!-- Step 1: Produkt wählen -->
     @if (currentStep() === 1) {
@@ -112,63 +98,9 @@
           <h2 class="booking-card__title">Deine Kontaktdaten</h2>
         </div>
 
-        <form class="contact-form" [formGroup]="contactForm">
-          <div class="form-row">
-            <div class="form-field">
-              <label class="form-label">Vollständiger Name</label>
-              <div class="p-input-icon-left input-wrapper">
-                <i class="pi pi-user"></i>
-                <input
-                  pInputText
-                  formControlName="fullName"
-                  placeholder="Max Mustermann"
-                  class="booking-input"
-                  autocomplete="name"
-                  [class.ng-invalid]="contactForm.get('fullName')?.invalid && contactForm.get('fullName')?.touched"
-                />
-              </div>
-              @if (contactForm.get('fullName')?.invalid && contactForm.get('fullName')?.touched) {
-                <small class="form-error">Bitte vollständigen Namen eingeben.</small>
-              }
-            </div>
-
-            <div class="form-field">
-              <label class="form-label">Telefonnummer</label>
-              <div class="p-input-icon-left input-wrapper">
-                <i class="pi pi-phone"></i>
-                <input
-                  pInputText
-                  formControlName="phone"
-                  placeholder="+49 123 456 789"
-                  class="booking-input"
-                  autocomplete="tel"
-                  [class.ng-invalid]="contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched"
-                />
-              </div>
-              @if (contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched) {
-                <small class="form-error">Bitte gültige Telefonnummer eingeben.</small>
-              }
-            </div>
-          </div>
-
-          <div class="form-field">
-            <label class="form-label">E-Mail-Adresse</label>
-            <div class="p-input-icon-left input-wrapper">
-              <i class="pi pi-envelope"></i>
-              <input
-                pInputText
-                formControlName="email"
-                placeholder="max@beispiel.de"
-                class="booking-input"
-                autocomplete="email"
-                [class.ng-invalid]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched"
-              />
-            </div>
-            @if (contactForm.get('email')?.invalid && contactForm.get('email')?.touched) {
-              <small class="form-error">Bitte gültige E-Mail-Adresse eingeben.</small>
-            }
-          </div>
-        </form>
+        <app-contact-form
+          (form)="onFormReady($event)"
+        ></app-contact-form>
 
         <div class="booking-card__actions">
           <app-glow-button
@@ -203,24 +135,12 @@
           </div>
         }
 
-        @if (!loadingSlots()) {
-          <div class="slots-grid">
-            @for (slot of availableSlots(); track slot.id) {
-              @if (isSlotInFuture(slot.date)) {
-                <app-appointment-slot-card
-                  [slot]="slot"
-                  [selected]="selectedSlot()?.id === slot.id"
-                  (select)="selectSlot($event)"
-                ></app-appointment-slot-card>
-              }
-            } @empty {
-              <div class="slots-empty">
-                <i class="pi pi-calendar-times"></i>
-                <p>Aktuell sind keine Termine verfügbar. Bitte kontaktiere uns direkt.</p>
-              </div>
-            }
-          </div>
-        }
+        <app-slot-picker
+          [slots]="availableSlots()"
+          [selectedSlot]="selectedSlot()"
+          [loading]="loadingSlots()"
+          (slotSelected)="selectSlot($event)"
+        ></app-slot-picker>
 
         <div class="booking-card__actions">
           <app-glow-button
@@ -279,50 +199,8 @@
     }
 
     <!-- Step 5: Erfolgreich -->
-    @if (currentStep() === 5 && bookingStatus() === 'success') {
-      <div class="booking-card booking-card--success">
-        <div class="success-animation">
-          <div class="success-ring"></div>
-          <div class="success-icon">
-            <i class="pi pi-check"></i>
-          </div>
-        </div>
-        <h2 class="success-title">{{ isCommunity() ? 'Willkommen in der Community!' : 'Buchung bestätigt!' }}</h2>
-        <p class="success-text">
-          @if (isCommunity()) {
-            Du erhältst in Kürze eine E-Mail mit deinem <strong>Telegram-Einladungslink</strong>. Wir freuen uns auf dich!
-          } @else {
-            Du erhältst in Kürze eine Bestätigungs-E-Mail.
-              Ich freue mich auf dich!
-          }
-        </p>
-        <app-glow-button
-          label="Zurück zur Startseite"
-          icon="pi-home"
-          routerLink="/"
-        ></app-glow-button>
-      </div>
-    }
-
-    <!-- Step 5: Zahlung abgebrochen -->
-    @if (currentStep() === 5 && bookingStatus() === 'cancel') {
-      <div class="booking-card booking-card--cancel">
-        <h2 class="cancel-title">Zahlung abgebrochen</h2>
-        <p class="cancel-text">
-          Der Bezahlvorgang wurde abgebrochen.
-          @if (!isCommunity()) {
-            Der Termin wird in Kürze automatisch wieder freigegeben.
-          }
-        </p>
-        <div class="booking-card__actions">
-          <app-glow-button
-            label="Zur Startseite"
-            icon="pi-home"
-            variant="ghost"
-            routerLink="/"
-          ></app-glow-button>
-        </div>
-      </div>
+    @if (currentStep() === 5 && bookingStatus()) {
+      <app-booking-result [status]="bookingStatus()!"></app-booking-result>
     }
 
   </div>

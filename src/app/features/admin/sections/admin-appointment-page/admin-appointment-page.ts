@@ -15,7 +15,10 @@ import {
 } from '../../../../shared/models/appointment.model';
 import { AppointmentService } from '../../../booking/services/appointment-service/appointment.service';
 import { FormatDatePipe } from '../../../../shared/pipes/formatDatePipe';
-import {BookedAppointment, BookingService} from '../../../booking/services/booking-service/booking.service';
+import {
+  BookedAppointment,
+  BookedAppointmentService
+} from '../../services/booked-appointment-service/booked-appointment.service';
 
 @Component({
   selector: 'app-termine-page',
@@ -59,13 +62,11 @@ export class AdminAppointmentPage implements OnInit {
     private messageService:           MessageService,
     private confirmationService:      ConfirmationService,
     private appointmentService:       AppointmentService,
-    private bookedAppointmentService: BookingService,
+    private bookedAppointmentService: BookedAppointmentService,
   ) {}
 
-  ngOnInit() {
-    this.loadAppointments().then(() => {
-      this.deleteOldAppointments()
-    });
+  async ngOnInit() {
+    await this.loadAppointments();
   }
 
   // ── Tab Switch ───────────────────────────────────────────
@@ -83,6 +84,7 @@ export class AdminAppointmentPage implements OnInit {
       const [mentoring, livetrading] = await Promise.all([
         this.appointmentService.getAvailableByType('mentoring'),
         this.appointmentService.getAvailableByType('livetrading'),
+        this.appointmentService.deleteExpired(),
       ]);
       this.mentoringAppointments   = mentoring;
       this.liveTradingAppointments = livetrading;
