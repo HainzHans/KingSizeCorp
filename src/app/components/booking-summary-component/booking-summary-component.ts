@@ -30,7 +30,7 @@ export class BookingSummaryComponent {
     switch (this.product()) {
       case 'livetrading': return '€ 150 / Session';
       case 'mentoring':   return '€ 1200 / LifeTime';
-      case 'community':   return '€ 49 / Monat';
+      case 'community':   return '€ 50 / Monat';
       default:            return '';
     }
   });
