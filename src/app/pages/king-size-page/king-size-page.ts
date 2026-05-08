@@ -35,7 +35,7 @@ export class KingSizePage implements OnInit {
 
   ngOnInit() {
     this.seo.setPage({
-      title: 'KingSize Corp – 1:1 Mentoring mit Marcel Dichter',
+      title: 'KingSize Corp – Trading Mentoring mit Marcel Dichter',
       description: 'Lerne profitabel zu traden und Märkte zu lesen mit meinem 1:1 Mentoring.',
       url: 'https://kingsize-corp.de',
     });
