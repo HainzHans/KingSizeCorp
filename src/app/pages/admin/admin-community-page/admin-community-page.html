@@ -1,0 +1,81 @@
+<!-- src/app/pages/admin/admin-community-page/admin-community-page.html -->
+<div class="community-page">
+
+  <div class="page-header">
+    <div>
+      <span class="page-eyebrow">Admin · Community</span>
+      <h1 class="page-title">Community Mitglieder</h1>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card stat-card--active">
+      <div class="stat-card__icon"><i class="pi pi-check-circle"></i></div>
+      <div class="stat-card__body">
+        <span class="stat-card__value">{{ totalActive }}</span>
+        <span class="stat-card__label">Aktive Abos</span>
+      </div>
+    </div>
+    <div class="stat-card stat-card--pending">
+      <div class="stat-card__icon"><i class="pi pi-clock"></i></div>
+      <div class="stat-card__body">
+        <span class="stat-card__value">{{ totalPending }}</span>
+        <span class="stat-card__label">Ausstehend</span>
+      </div>
+    </div>
+    <div class="stat-card stat-card--cancelled">
+      <div class="stat-card__icon"><i class="pi pi-times-circle"></i></div>
+      <div class="stat-card__body">
+        <span class="stat-card__value">{{ totalCancelled }}</span>
+        <span class="stat-card__label">Gekündigt</span>
+      </div>
+    </div>
+    <div class="stat-card stat-card--expired">
+      <div class="stat-card__icon"><i class="pi pi-ban"></i></div>
+      <div class="stat-card__body">
+        <span class="stat-card__value">{{ totalExpired }}</span>
+        <span class="stat-card__label">Abgelaufen</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="table-section">
+    <p-table [value]="filtered" [paginator]="true" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }">
+      <ng-template #caption>
+        <div style="display:flex; align-items:center; gap:0.5rem; padding-bottom:0.5rem; color: var(--primary-grey)">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" [(ngModel)]="searchQuery" placeholder="Suchen…" />
+        </div>
+      </ng-template>
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="customer_name">Name <p-sortIcon field="customer_name" /></th>
+          <th pSortableColumn="customer_email">E-Mail <p-sortIcon field="customer_email" /></th>
+          <th>Telefon</th>
+          <th pSortableColumn="status">Status <p-sortIcon field="status" /></th>
+          <th pSortableColumn="created_at">Seit <p-sortIcon field="created_at" /></th>
+          <th>Stripe Abo-ID</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-m>
+        <tr>
+          <td>
+            <div class="name-cell">
+              <div class="name-avatar">{{ m.customer_name.charAt(0) }}</div>
+              <span>{{ m.customer_name }}</span>
+            </div>
+          </td>
+          <td class="cell-muted">{{ m.customer_email }}</td>
+          <td class="cell-muted">{{ m.customer_phone }}</td>
+          <td><p-tag [value]="getStatusLabel(m.status)" [severity]="getSeverity(m.status)" /></td>
+          <td class="cell-muted">{{ formatDate(m.created_at) }}</td>
+          <td class="cell-mono">{{ m.stripe_subscription_id ?? '—' }}</td>
+        </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr><td colspan="6" class="empty-msg"><i class="pi pi-users"></i> Keine Mitglieder gefunden</td></tr>
+      </ng-template>
+    </p-table>
+  </section>
+
+</div>

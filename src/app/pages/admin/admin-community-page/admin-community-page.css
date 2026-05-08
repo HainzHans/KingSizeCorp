@@ -1,0 +1,25 @@
+/* src/app/pages/admin/admin-community-page/admin-community-page.css */
+.community-page { display:flex; flex-direction:column; gap:28px; font-family:'DM Sans',sans-serif; color:var(--primary-white,#f1f5f9); }
+
+.page-header { display:flex; align-items:flex-end; justify-content:space-between; }
+.page-eyebrow { display:block; font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--primary-green,#22c55e); margin-bottom:4px; }
+.page-title { font-size:26px; font-weight:700; letter-spacing:-.4px; margin:0; }
+
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; }
+.stat-card { display:flex; align-items:center; gap:14px; padding:18px 20px; border-radius:14px; background:var(--secondary-black,#1a1d27); border:1px solid rgba(255,255,255,.05); }
+.stat-card__icon { display:flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:10px; flex-shrink:0; i { font-size:18px; } }
+.stat-card__body { display:flex; flex-direction:column; gap:2px; }
+.stat-card__value { font-size:22px; font-weight:700; line-height:1; letter-spacing:-.5px; }
+.stat-card__label { font-size:11.5px; color:var(--primary-grey,#64748b); font-weight:500; }
+
+.stat-card--active   .stat-card__icon { color:#22c55e; background:rgba(34,197,94,.1); }
+.stat-card--pending  .stat-card__icon { color:#fbbf24; background:rgba(251,191,36,.1); }
+.stat-card--cancelled .stat-card__icon { color:#ef4444; background:rgba(239,68,68,.1); }
+.stat-card--expired  .stat-card__icon { color:#94a3b8; background:rgba(148,163,184,.1); }
+
+.table-section { display:flex; flex-direction:column; }
+.name-cell { display:flex; align-items:center; gap:10px; }
+.name-avatar { display:flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; font-size:13px; font-weight:700; background:rgba(34,197,94,.12); color:var(--primary-green,#22c55e); flex-shrink:0; }
+.cell-muted { color:rgba(148,163,184,.8) !important; font-size:13px !important; }
+.cell-mono { font-family:monospace; font-size:12px !important; color:var(--primary-grey,#64748b) !important; }
+.empty-msg { text-align:center; padding:40px !important; color:var(--primary-grey,#64748b); font-size:14px; }

@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth-service';
 import { KingSizeLogoComponent } from '../king-size-logo-component/king-size-logo-component';
 import { AdminOverviewPage } from '../../pages/admin/admin-overview-page/admin-overview-page';
 import { AdminAppointmentPage } from '../../pages/admin/admin-appointment-page/admin-appointment-page';
+import {AdminCommunityPage} from '../../pages/admin/admin-community-page/admin-community-page';
 
 export interface NavItem {
   icon:      string;
@@ -22,6 +23,7 @@ export interface NavItem {
     KingSizeLogoComponent,
     AdminOverviewPage,
     AdminAppointmentPage,
+    AdminCommunityPage,
   ],
   templateUrl: './sidebar-component.html',
   styleUrl: './sidebar-component.css',
@@ -36,6 +38,7 @@ export class SidebarComponent {
 
   adminItems: NavItem[] = [
     { icon: 'pi-users',    label: 'Übersicht', key: 'admin-overview'     },
+    { icon: 'pi-star',        label: 'Community',  key: 'admin-community'    },
     { icon: 'pi-calendar', label: 'Termine',   key: 'admin-appointments' },
   ];
 
