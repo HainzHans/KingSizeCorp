@@ -14,12 +14,12 @@ import { GlowButtonComponent } from '../../../../shared/components/glow-button-c
 
 // Models & Services
 import { Appointment, AppointmentType } from '../../../../shared/models/appointment.model';
-import { AppointmentService } from '../../services/appointment-service/appointment.service';
+import { AppointmentService } from '../../../../shared/services/appointment-service/appointment.service';
 import {StepIndicator} from '../../components/step-indicator/step-indicator';
 import {SlotPicker} from '../../components/slot-picker/slot-picker';
 import {BookingResult} from '../../components/booking-result/booking-result';
 import {ContactForm} from '../../components/contact-form/contact-form';
-import {CheckoutService} from '../../services/checkout-service/checkout.service';
+import {CheckoutService} from '../../../../shared/services/checkout-service/checkout.service';
 
 @Component({
   selector: 'app-appointment-form-section',

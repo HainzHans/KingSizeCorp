@@ -1,26 +1,13 @@
 import { Injectable } from '@angular/core';
-import {supabase} from '../../../../core/supabase.client';
+import {supabase} from '../../../core/supabase.client';
+import {UserPurchase} from '../../models/user-purchase.model';
+import {User} from '../../models/user.model';
 
-export interface UserPurchase {
-  type:   string;
-  date:   string;
-  time:   string;
-  status: 'Abgeschlossen' | 'Ausstehend';
-  price:  number;
-}
-
-export interface UserRow {
-  email:     string;
-  name:      string;
-  phone:     string;
-  status:    'Abgeschlossen' | 'Ausstehend';
-  purchases: UserPurchase[];
-}
 
 @Injectable({ providedIn: 'root' })
-export class AdminOverviewService {
+export class UserService {
 
-  async getUsers(): Promise<UserRow[]> {
+  async getUsers(): Promise<User[]> {
     const { data, error } = await supabase
       .from('bookings')
       .select(`
@@ -40,7 +27,7 @@ export class AdminOverviewService {
     if (error) throw error;
 
     // ── Nach E-Mail gruppieren ───────────────────────────
-    const map = new Map<string, UserRow>();
+    const map = new Map<string, User>();
 
     for (const booking of data ?? []) {
       const email = booking.customer_email;

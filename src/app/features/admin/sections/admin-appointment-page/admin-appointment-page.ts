@@ -13,12 +13,12 @@ import {
   CreateAppointmentDto,
   UpdateAppointmentDto,
 } from '../../../../shared/models/appointment.model';
-import { AppointmentService } from '../../../booking/services/appointment-service/appointment.service';
+import { AppointmentService } from '../../../../shared/services/appointment-service/appointment.service';
 import { FormatDatePipe } from '../../../../shared/pipes/formatDatePipe';
 import {
   BookedAppointment,
   BookedAppointmentService
-} from '../../services/booked-appointment-service/booked-appointment.service';
+} from '../../../../shared/services/booked-appointment-service/booked-appointment.service';
 
 @Component({
   selector: 'app-termine-page',

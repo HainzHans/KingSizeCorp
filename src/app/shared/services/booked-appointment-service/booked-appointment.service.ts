@@ -1,16 +1,6 @@
 import { Injectable } from '@angular/core';
-import {supabase} from '../../../../core/supabase.client';
-
-export interface BookedAppointment {
-  id:             string;
-  date:           string;
-  time:           string;
-  type:           string;
-  price:          number;
-  customer_name:  string;
-  customer_email: string;
-  customer_phone: string;
-}
+import {supabase} from '../../../core/supabase.client';
+import {BookedAppointment} from '../../models/booked-appointment.model';
 
 @Injectable({
   providedIn: 'root',

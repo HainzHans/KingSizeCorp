@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { InputTextModule } from 'primeng/inputtext';
-import { CommunityOverviewService, CommunityMember } from '../../services/community-overview-service/community-overview.service';
+import { CommunitySubscriptionService, CommunitySubscription } from '../../../../shared/services/community-subscription-service/community-subscription.service';
 
 @Component({
   selector: 'app-admin-community-page',
@@ -15,19 +15,19 @@ import { CommunityOverviewService, CommunityMember } from '../../services/commun
   styleUrl: './admin-community-page.css',
 })
 export class AdminCommunityPage implements OnInit {
-  members: CommunityMember[] = [];
+  members: CommunitySubscription[] = [];
   loading = false;
   searchQuery = '';
 
   constructor(
-    private communityService: CommunityOverviewService,
+    private communityService: CommunitySubscriptionService,
     private cdr: ChangeDetectorRef,
   ) {}
 
   async ngOnInit() {
     this.loading = true;
     try {
-      this.members = await this.communityService.getMembers();
+      this.members = await this.communityService.getCommunitySubscriptions();
     } catch (e) {
       console.error('Fehler beim Laden:', e);
     } finally {
@@ -36,7 +36,7 @@ export class AdminCommunityPage implements OnInit {
     }
   }
 
-  get filtered(): CommunityMember[] {
+  get filtered(): CommunitySubscription[] {
     if (!this.searchQuery.trim()) return this.members;
     const q = this.searchQuery.toLowerCase();
     return this.members.filter(m =>

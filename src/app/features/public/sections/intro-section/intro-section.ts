@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {OrbitComponent} from '../../../../shared/components/orbit-component/orbit-component';
 import {KingSizeButton} from '../../../../shared/components/king-size-button/king-size-button';
-import {AppointmentService} from '../../../booking/services/appointment-service/appointment.service';
+import {AppointmentService} from '../../../../shared/services/appointment-service/appointment.service';
 
 @Component({
   selector: 'app-intro-section',

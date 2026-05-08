@@ -6,7 +6,7 @@ import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { InputTextModule } from 'primeng/inputtext';
-import {AdminOverviewService, UserRow} from '../../services/admin-overview-service/admin-overview.service';
+import {UserService, User} from '../../../../shared/services/user-service/user.service';
 
 
 @Component({
@@ -28,10 +28,10 @@ export class AdminOverviewPage implements OnInit {
 
   expandedRows: any = {};
   searchEmail       = '';
-  users: UserRow[]  = [];
+  users: User[]  = [];
   loading           = false;
 
-  constructor(private adminOverviewService: AdminOverviewService,
+  constructor(private adminOverviewService: UserService,
               private cdr: ChangeDetectorRef,) {}
 
   async ngOnInit() {
@@ -47,7 +47,7 @@ export class AdminOverviewPage implements OnInit {
   }
 
   // ── Gefilterte User ──────────────────────────────────────
-  get filteredUsers(): UserRow[] {
+  get filteredUsers(): User[] {
     if (!this.searchEmail.trim()) return this.users;
     const q = this.searchEmail.toLowerCase();
     return this.users.filter(u =>
@@ -62,7 +62,7 @@ export class AdminOverviewPage implements OnInit {
   get pendingOrders()  { return this.users.flatMap(u => u.purchases).filter(p => p.status === 'Ausstehend').length; }
   get totalPurchases() { return this.users.flatMap(u => u.purchases).length; }
 
-  getUserRevenue(user: UserRow): number {
+  getUserRevenue(user: User): number {
     return user.purchases
       .filter(p => p.status === 'Abgeschlossen')
       .reduce((s, p) => s + p.price, 0);
