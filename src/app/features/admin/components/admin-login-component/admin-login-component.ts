@@ -2,14 +2,13 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Button } from 'primeng/button';
-import { InputText } from 'primeng/inputtext';
 import { Password } from 'primeng/password';
 import {supabase} from '../../../../core/supabase.client';
 
 @Component({
   selector: 'app-admin-login',
   standalone: true,
-  imports: [FormsModule, Button, InputText, Password],
+  imports: [FormsModule, Button, Password],
   templateUrl: './admin-login-component.html',
   styleUrl: './admin-login-component.css'
 })

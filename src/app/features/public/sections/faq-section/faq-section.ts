@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'primeng/accordion';
 
 @Component({
   selector: 'app-faq-section',
   imports: [
-    NgClass,
     Accordion,
     AccordionPanel,
     AccordionHeader,

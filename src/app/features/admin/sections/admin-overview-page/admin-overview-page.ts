@@ -6,7 +6,8 @@ import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { InputTextModule } from 'primeng/inputtext';
-import {UserService, User} from '../../../../shared/services/user-service/user.service';
+import {UserService} from '../../../../shared/services/user-service/user.service';
+import {User} from '../../../../shared/models/user.model';
 
 
 @Component({
@@ -64,7 +65,7 @@ export class AdminOverviewPage implements OnInit {
 
   getUserRevenue(user: User): number {
     return user.purchases
-      .filter(p => p.status === 'Abgeschlossen')
+      .filter((p) => p.status === 'Abgeschlossen')
       .reduce((s, p) => s + p.price, 0);
   }
 

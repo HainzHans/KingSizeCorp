@@ -5,7 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { InputTextModule } from 'primeng/inputtext';
-import { CommunitySubscriptionService, CommunitySubscription } from '../../../../shared/services/community-subscription-service/community-subscription.service';
+import { CommunitySubscriptionService } from '../../../../shared/services/community-subscription-service/community-subscription.service';
+import {CommunitySubscription} from '../../../../shared/models/community-subscription.model';
 
 @Component({
   selector: 'app-admin-community-page',

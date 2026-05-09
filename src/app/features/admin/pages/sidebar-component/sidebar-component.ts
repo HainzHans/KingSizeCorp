@@ -1,6 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
 import { AuthService } from '../../../../shared/services/auth-service/auth-service';
 import { KingSizeLogoComponent } from '../../../../shared/components/king-size-logo-component/king-size-logo-component';
 import { AdminOverviewPage } from '../../sections/admin-overview-page/admin-overview-page';
@@ -19,7 +18,6 @@ export interface NavItem {
   standalone: true,
   imports: [
     CommonModule,
-    RouterOutlet,
     KingSizeLogoComponent,
     AdminOverviewPage,
     AdminAppointmentPage,

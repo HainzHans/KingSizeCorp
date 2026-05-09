@@ -19,7 +19,7 @@
 }
 
 .slot-card--selected {
-  border-color: var(--primary-green); !important;
+  border-color: var(--primary-green);
   background: transparent !important;
 }
 .slot-card--selected .slot-card__check {

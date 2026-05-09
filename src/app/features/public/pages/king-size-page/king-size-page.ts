@@ -6,7 +6,6 @@ import {FooterSection} from "../../../../shared/sections/footer-section/footer-s
 import {IntroSection} from "../../sections/intro-section/intro-section";
 import {StatisticSection} from "../../sections/statistic-section/statistic-section";
 import {HeroSection} from "../../../../shared/sections/hero-section/hero-section";
-import {BrandsAutoSliderComponent} from '../../../../shared/components/brands-auto-slider-component/brands-auto-slider-component';
 import {HeaderSection} from '../../../../shared/sections/header-section/header-section';
 import {FaqSection} from '../../sections/faq-section/faq-section';
 import {CommunitySection} from '../../sections/community-section/community-section';
@@ -21,7 +20,6 @@ import {CommunitySection} from '../../sections/community-section/community-secti
     IntroSection,
     StatisticSection,
     HeroSection,
-    BrandsAutoSliderComponent,
     HeaderSection,
     FaqSection,
     CommunitySection

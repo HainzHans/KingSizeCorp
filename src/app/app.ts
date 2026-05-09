@@ -1,11 +1,10 @@
 import { Component, signal } from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {Router, RouterOutlet} from '@angular/router';
-import {InputText} from 'primeng/inputtext';
+import {RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [FormsModule, RouterOutlet, InputText],
+  imports: [FormsModule, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

@@ -16,9 +16,9 @@ import {
 import { AppointmentService } from '../../../../shared/services/appointment-service/appointment.service';
 import { FormatDatePipe } from '../../../../shared/pipes/formatDatePipe';
 import {
-  BookedAppointment,
   BookedAppointmentService
 } from '../../../../shared/services/booked-appointment-service/booked-appointment.service';
+import {BookedAppointment} from '../../../../shared/models/booked-appointment.model';
 
 @Component({
   selector: 'app-termine-page',
