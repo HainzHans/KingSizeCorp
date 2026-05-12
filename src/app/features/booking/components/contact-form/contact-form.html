@@ -1,0 +1,57 @@
+<form class="contact-form" [formGroup]="contactForm">
+  <div class="form-row">
+    <div class="form-field">
+      <label class="form-label">Vollständiger Name</label>
+      <div class="input-wrapper">
+        <i class="pi pi-user"></i>
+        <input
+          pInputText
+          formControlName="fullName"
+          placeholder="Max Mustermann"
+          class="booking-input"
+          autocomplete="name"
+          [class.ng-invalid]="contactForm.get('fullName')?.invalid && contactForm.get('fullName')?.touched"
+        />
+      </div>
+      @if (contactForm.get('fullName')?.invalid && contactForm.get('fullName')?.touched) {
+        <small class="form-error">Bitte vollständigen Namen eingeben.</small>
+      }
+    </div>
+
+    <div class="form-field">
+      <label class="form-label">Telefonnummer</label>
+      <div class="input-wrapper">
+        <i class="pi pi-phone"></i>
+        <input
+          pInputText
+          formControlName="phone"
+          placeholder="+49 123 456 789"
+          class="booking-input"
+          autocomplete="tel"
+          [class.ng-invalid]="contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched"
+        />
+      </div>
+      @if (contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched) {
+        <small class="form-error">Bitte gültige Telefonnummer eingeben.</small>
+      }
+    </div>
+  </div>
+
+  <div class="form-field">
+    <label class="form-label">E-Mail-Adresse</label>
+    <div class="input-wrapper">
+      <i class="pi pi-envelope"></i>
+      <input
+        pInputText
+        formControlName="email"
+        placeholder="max@beispiel.de"
+        class="booking-input"
+        autocomplete="email"
+        [class.ng-invalid]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched"
+      />
+    </div>
+    @if (contactForm.get('email')?.invalid && contactForm.get('email')?.touched) {
+      <small class="form-error">Bitte gültige E-Mail-Adresse eingeben.</small>
+    }
+  </div>
+</form>

@@ -1,0 +1,55 @@
+<div class="summary-grid">
+  <div class="summary-block">
+    <span class="summary-block__label">
+      <i class="pi pi-box"></i> Produkt
+    </span>
+    <span class="summary-block__value">{{ productLabel() }}</span>
+  </div>
+
+  <div class="summary-block">
+    <span class="summary-block__label">
+      <i class="pi pi-tag"></i> Kosten
+    </span>
+    <span class="summary-block__value summary-block__value--price">{{ priceLabel() }}</span>
+  </div>
+
+  <div class="summary-block">
+    <span class="summary-block__label">
+      <i class="pi pi-user"></i> Vollständiger Name
+    </span>
+    <span class="summary-block__value">{{ fullName() }}</span>
+  </div>
+
+  <div class="summary-block">
+    <span class="summary-block__label">
+      <i class="pi pi-phone"></i> Telefon
+    </span>
+    <span class="summary-block__value">{{ phone() }}</span>
+  </div>
+
+  <div class="summary-block">
+    <span class="summary-block__label">
+      <i class="pi pi-envelope"></i> E-Mail
+    </span>
+    <span class="summary-block__value">{{ email() }}</span>
+  </div>
+
+  @if (slot()) {
+    <div class="summary-block">
+    <span class="summary-block__label">
+      <i class="pi pi-calendar"></i> Termin
+    </span>
+      <span class="summary-block__value">
+      @if (slot()?.date && slot()?.time) {
+        <span class="green-text">
+          {{ slot()!.date | formatDate}}
+          <span class="white-text">um</span>
+          {{ slot()!.time | slice:0:5}}
+      </span>
+      }
+
+    </span>
+    </div>
+  }
+
+</div>

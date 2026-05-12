@@ -1,0 +1,77 @@
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper .pi {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.9rem;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.booking-input {
+  width: 100%;
+  padding: 0.85rem 1rem 0.85rem 2.75rem !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 10px !important;
+  color: #fff !important;
+  font-size: 0.9rem !important;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
+  box-sizing: border-box;
+}
+
+.booking-input::placeholder {
+  color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.booking-input:focus {
+  border-color: var(--primary-green) !important;
+  outline: none !important;
+}
+
+.booking-input.ng-invalid {
+  border-color: rgba(255, 80, 80, 0.5) !important;
+}
+
+.form-error {
+  font-size: 0.75rem;
+  color: #ff6b6b;
+  margin-top: 0.15rem;
+}

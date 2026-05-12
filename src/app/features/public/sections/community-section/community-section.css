@@ -1,0 +1,216 @@
+.community-section {
+  background: var(--primary-black);
+  padding-top: 10rem;
+  padding-bottom: 4rem;
+}
+
+/* ── Eyebrow ──────────────────────────────────────────────── */
+.community-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 3rem;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.4rem 1.2rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ── Layout ───────────────────────────────────────────────── */
+.community-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+/* ── Left: Text ───────────────────────────────────────────── */
+.community-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.community-description {
+  max-width: 480px;
+  line-height: 1.8;
+}
+
+.community-features {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.community-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--primary-grey);
+  font-size: var(--text-size-100);
+}
+
+.community-feature-item i {
+  font-size: 1.1rem;
+  color: var(--primary-green);
+  width: 1.4rem;
+  flex-shrink: 0;
+}
+
+/* ── Right: Card ──────────────────────────────────────────── */
+.community-card-wrapper {
+  flex: 1;
+  position: relative;
+  max-width: 460px;
+}
+
+.community-badge {
+  position: absolute;
+  top: -0.9rem;
+  left: 2rem;
+  background: var(--primary-green);
+  color: #071a0f;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.9rem;
+  border-radius: 2rem;
+  z-index: 2;
+}
+
+.community-card {
+  padding: 2rem;
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  outline: 1px solid rgba(0, 0, 0, 0.4);
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  background-image: radial-gradient(
+    circle at top,
+    rgba(46, 204, 113, 0.06),
+    rgba(255, 255, 255, 0) 60%
+  );
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Card Header */
+.community-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.community-card-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.community-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.community-price-amount {
+  font-size: var(--text-size-700);
+  font-weight: 700;
+  color: var(--primary-white);
+  letter-spacing: -0.04em;
+}
+
+.community-price-unit {
+  font-size: var(--text-size-200);
+}
+
+.community-price-cancel {
+  font-size: 0.75rem;
+}
+
+/* Divider */
+.community-card-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Feature List */
+.community-card-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.community-card-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: var(--text-size-100);
+  color: var(--primary-white);
+}
+
+.community-check-icon {
+  color: var(--primary-green);
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+/* Compare */
+.community-compare {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.compare-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.compare-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--text-size-100);
+}
+
+.compare-row-muted {
+  opacity: 0.5;
+}
+
+.compare-tier {
+  color: var(--primary-white);
+}
+
+.community-tier-active {
+  font-weight: 700;
+}
+
+.compare-price {
+  font-size: var(--text-size-100);
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (min-width: 900px) {
+  .community-layout {
+    flex-direction: row;
+    align-items: center;
+    gap: 6rem;
+  }
+
+  .community-card-wrapper {
+    max-width: 420px;
+  }
+}

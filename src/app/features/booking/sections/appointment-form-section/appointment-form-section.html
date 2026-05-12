@@ -1,0 +1,207 @@
+<section class="booking-section">
+  <div class="container">
+
+    <!-- Step Indicator -->
+    <app-step-indicator
+      [steps]="steps"
+      [currentStep]="currentStep()"
+    ></app-step-indicator>
+
+    <!-- Step 1: Produkt wählen -->
+    @if (currentStep() === 1) {
+      <div class="booking-card">
+        <div class="booking-card__header">
+          <span class="booking-card__eyebrow">Schritt 1</span>
+          <h2 class="booking-card__title">Was möchtest du buchen?</h2>
+        </div>
+
+        <!-- Obere Reihe: Live Trading + Mentoring -->
+        <div class="product-grid">
+          <app-product-card
+            name="Live Trading"
+            description="Erlebe Trading in Echtzeit. Lerne Märkte zu lesen, Setups zu erkennen und Entscheidungen sicher zu treffen."
+            price="€ 150"
+            priceUnit="/ Session"
+            icon="pi-chart-line"
+            [features]="['Live Marktanalyse', 'Q&A in Echtzeit', 'Aufzeichnung inklusive']"
+            [selected]="selectedProduct() === 'livetrading'"
+            [showInfo]="true"
+          ></app-product-card>
+
+          <app-product-card
+            name="Mentoring"
+            description="Begleitung auf deinem Weg zum profitablen Trader. Individuell, intensiv und auf dich zugeschnitten."
+            price="€ 1200"
+            priceUnit="/ LifeTime"
+            icon="pi-star"
+            [features]="['Persönlicher Mentor', 'Wöchentliche Calls', 'Unbegrenzte Nachrichten']"
+            [selected]="selectedProduct() === 'mentoring'"
+            (select)="selectProduct('mentoring')"
+          ></app-product-card>
+        </div>
+
+        <!-- Community-Card: volle Breite, kompakter -->
+        <div
+          class="community-card"
+          [class.community-card--selected]="selectedProduct() === 'community'"
+          (click)="selectProduct('community')"
+        >
+          <div class="community-card__glow"></div>
+
+          <div class="community-card__left">
+            <div class="community-card__icon">
+              <i class="pi pi-telegram"></i>
+            </div>
+            <div class="community-card__info">
+              <div class="community-card__top">
+                <h3 class="community-card__name">KingSize Community</h3>
+                <div class="community-card__badge">Neu</div>
+              </div>
+              <p class="community-card__desc">
+                Zugang zur exklusiven KingSize Community - mit täglichen Marktanalysen, verständlich aufbereiteten Finanz‑ und Wirtschaftsnews
+                sowie fundiertem Krypto‑Know‑how.
+              </p>
+              <ul class="community-card__features">
+                <li><i class="pi pi-check-circle"></i> Monatlich kündbar</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="community-card__right">
+            <div class="community-card__price">
+              <span class="community-card__price-amount">€ 50</span>
+              <span class="community-card__price-unit">/ Monat</span>
+            </div>
+            <div class="community-card__select-indicator">
+              <i class="pi pi-check"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="booking-card__actions">
+          <app-glow-button
+            label="Weiter"
+            icon="pi-arrow-right"
+            iconPos="right"
+            [disabled]="!selectedProduct()"
+            (onClick)="nextStep()"
+          ></app-glow-button>
+        </div>
+      </div>
+    }
+
+    <!-- Step 2: Persönliche Daten -->
+    @if (currentStep() === 2) {
+      <div class="booking-card">
+        <div class="booking-card__header">
+          <span class="booking-card__eyebrow">Schritt 2</span>
+          <h2 class="booking-card__title">Deine Kontaktdaten</h2>
+        </div>
+
+        <app-contact-form
+          (form)="onFormReady($event)"
+        ></app-contact-form>
+
+        <div class="booking-card__actions">
+          <app-glow-button
+            label="Zurück"
+            icon="pi-arrow-left"
+            variant="ghost"
+            (onClick)="prevStep()"
+          ></app-glow-button>
+          <app-glow-button
+            [label]="isCommunity() ? 'Zur Übersicht' : 'Termin wählen'"
+            icon="pi-arrow-right"
+            iconPos="right"
+            [disabled]="contactForm.invalid"
+            (onClick)="nextStep()"
+          ></app-glow-button>
+        </div>
+      </div>
+    }
+
+    <!-- Step 3: Termin wählen (nur für Mentoring / Live Trading) -->
+    @if (currentStep() === 3 && !isCommunity()) {
+      <div class="booking-card">
+        <div class="booking-card__header">
+          <span class="booking-card__eyebrow">Schritt 3</span>
+          <h2 class="booking-card__title">Freien Termin wählen</h2>
+        </div>
+
+        @if (loadingSlots()) {
+          <div class="slots-loading">
+            <i class="pi pi-spin pi-spinner"></i>
+            <p>Termine werden geladen …</p>
+          </div>
+        }
+
+        <app-slot-picker
+          [slots]="availableSlots()"
+          [selectedSlot]="selectedSlot()"
+          [loading]="loadingSlots()"
+          (slotSelected)="selectSlot($event)"
+        ></app-slot-picker>
+
+        <div class="booking-card__actions">
+          <app-glow-button
+            label="Zurück"
+            icon="pi-arrow-left"
+            variant="ghost"
+            (onClick)="prevStep()"
+          ></app-glow-button>
+          <app-glow-button
+            label="Zur Übersicht"
+            icon="pi-arrow-right"
+            iconPos="right"
+            [disabled]="!selectedSlot()"
+            (onClick)="nextStep()"
+          ></app-glow-button>
+        </div>
+      </div>
+    }
+
+    <!-- Step 4: Übersicht & Bestätigung -->
+    @if (currentStep() === 4) {
+      <div class="booking-card booking-card--summary">
+        <div class="booking-card__header">
+          <span class="booking-card__eyebrow">{{ isCommunity() ? 'Schritt 3' : 'Schritt 4' }}</span>
+          <h2 class="booking-card__title">Deine Buchungsübersicht</h2>
+        </div>
+          <app-booking-summary
+            [product]="selectedProduct()"
+            [fullName]="contactForm.get('fullName')?.value"
+            [phone]="contactForm.get('phone')?.value"
+            [email]="contactForm.get('email')?.value"
+            [slot]="selectedSlot()"
+          ></app-booking-summary>
+          @if (isCommunity()) {
+            <p class="community-hint">
+              <i class="pi pi-info-circle"></i>
+              Nach erfolgreicher Zahlung erhältst du per E-Mail den Telegram-Einladungslink. Das Abo ist monatlich kündbar.
+            </p>
+          }
+        <div class="booking-card__actions">
+          <app-glow-button
+            label="Zurück"
+            icon="pi-arrow-left"
+            variant="ghost"
+            (onClick)="prevStep()"
+          ></app-glow-button>
+          <app-glow-button
+            [label]="isCommunity() ? 'Jetzt abonnieren' : 'Jetzt buchen'"
+            [icon]="submitting() ? 'pi-spin pi-spinner' : 'pi-check'"
+            iconPos="right"
+            [disabled]="submitting()"
+            (onClick)="submitBooking()"
+          ></app-glow-button>
+        </div>
+      </div>
+    }
+
+    <!-- Step 5: Erfolgreich -->
+    @if (currentStep() === 5 && bookingStatus()) {
+      <app-booking-result [status]="bookingStatus()!"></app-booking-result>
+    }
+
+  </div>
+</section>

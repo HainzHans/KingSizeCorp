@@ -1,0 +1,107 @@
+<section class="community-section">
+  <div class="container">
+
+    <div class="community-eyebrow">
+      <app-small-dot-component></app-small-dot-component>
+      <span class="grey-text">Neu</span>
+    </div>
+
+    <div class="community-layout">
+
+      <!-- LEFT: Text Content -->
+      <div class="community-text">
+        <h2>
+          Dein Einstieg
+          <br>
+          in die Welt des
+          <br>
+          <h2 class="green-text">Tradings.</h2>
+        </h2>
+        <p class="grey-text community-description">
+          Noch nicht bereit für 1:1 Mentoring? Kein Problem.
+          Die KingSize Community ist dein günstiger Einstieg —
+          mit echten Insights, täglichen Marktanalysen verständlich
+          aufbereiteten Finanz‑ und Wirtschaftsnews sowie fundiertem Krypto‑Know‑how.
+        </p>
+
+        <div class="community-features">
+          <div class="community-feature-item">
+            <i class="pi pi-chart-line"></i>
+            <span>Tägliche Marktanalysen</span>
+          </div>
+          <div class="community-feature-item">
+            <i class="pi pi-megaphone"></i>
+            <span>Finanz‑ und Wirtschaftsnews</span>
+          </div>
+          <div class="community-feature-item">
+            <i class="pi pi-bitcoin"></i>
+            <span>Fundiertes Krypto‑Know‑how</span>
+          </div>
+        </div>
+
+        <app-king-size-button
+          [target]="'/contact'"
+          [btnText]="'Community beitreten'"
+        ></app-king-size-button>
+      </div>
+
+      <!-- RIGHT: Pricing Card -->
+      <div class="community-card-wrapper">
+        <div class="community-badge">Einstieg</div>
+        <div class="community-card">
+
+          <div class="community-card-header">
+            <span class="community-card-label grey-text">KingSize Community</span>
+            <div class="community-price">
+              <span class="community-price-amount">€ 50</span>
+              <span class="community-price-unit grey-text">/ Monat</span>
+            </div>
+            <span class="grey-text community-price-cancel">Jederzeit kündbar</span>
+          </div>
+
+          <div class="community-card-divider"></div>
+
+          <ul class="community-card-list">
+            <li>
+              <i class="pi pi-check community-check-icon"></i>
+              <span>Exklusive KingSize Community</span>
+            </li>
+            <li>
+              <i class="pi pi-check community-check-icon"></i>
+              <span>Tägliche Marktanalysen</span>
+            </li>
+            <li>
+              <i class="pi pi-check community-check-icon"></i>
+              <span>Finanz‑ und Wirtschaftsnews</span>
+            </li>
+            <li>
+              <i class="pi pi-check community-check-icon"></i>
+              <span>Fundiertes Krypto‑Know‑how</span>
+            </li>
+
+          </ul>
+
+          <div class="community-card-divider"></div>
+
+          <div class="community-compare">
+            <span class="grey-text compare-label">Im Vergleich</span>
+            <div class="compare-row">
+              <span class="compare-tier community-tier-active">Community</span>
+              <span class="compare-price green-text">€ 50 / Monat</span>
+            </div>
+            <div class="compare-row compare-row-muted">
+              <span class="compare-tier">Live Trading</span>
+              <span class="compare-price grey-text">€ 150 / Session</span>
+            </div>
+            <div class="compare-row compare-row-muted">
+              <span class="compare-tier">Mentoring</span>
+              <span class="compare-price grey-text">€ 1.200 / LifeTime</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

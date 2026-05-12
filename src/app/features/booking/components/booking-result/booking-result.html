@@ -1,0 +1,38 @@
+@if (status() === 'success') {
+  <div class="booking-card booking-card--success">
+    <div class="success-animation">
+      <div class="success-ring"></div>
+      <div class="success-icon">
+        <i class="pi pi-check"></i>
+      </div>
+    </div>
+    <h2 class="success-title">Buchung bestätigt!</h2>
+    <p class="success-text">
+      Du erhältst in Kürze eine Bestätigungs-E-Mail.
+      Ich freue mich auf dich!
+    </p>
+    <app-glow-button
+      label="Zurück zur Startseite"
+      icon="pi-home"
+      routerLink="/"
+    ></app-glow-button>
+  </div>
+}
+
+@if (status() === 'cancel') {
+  <div class="booking-card booking-card--cancel">
+    <h2 class="cancel-title">Zahlung abgebrochen</h2>
+    <p class="cancel-text">
+      Der Bezahlvorgang wurde abgebrochen.
+      Der Termin wird in Kürze automatisch wieder freigegeben.
+    </p>
+    <div class="booking-card__actions">
+      <app-glow-button
+        label="Zur Startseite"
+        icon="pi-home"
+        variant="ghost"
+        routerLink="/"
+      ></app-glow-button>
+    </div>
+  </div>
+}
