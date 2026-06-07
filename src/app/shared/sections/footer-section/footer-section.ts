@@ -3,6 +3,7 @@ import {KingSizeButton} from '../../components/king-size-button/king-size-button
 import {KingSizeLogoComponent} from '../../components/king-size-logo-component/king-size-logo-component';
 import {SmallDotComponent} from '../../components/small-dot-component/small-dot-component';
 import {Router} from '@angular/router';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-footer-section',
@@ -23,4 +24,5 @@ export class FooterSection {
     await this.router.navigate([target])
   }
 
+  protected readonly environment = environment;
 }
