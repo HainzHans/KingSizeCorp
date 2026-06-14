@@ -29,7 +29,7 @@ export class BookingSummaryComponent {
   priceLabel = computed(() => {
     switch (this.product()) {
       case 'livetrading': return '€ 150 / Session';
-      case 'mentoring':   return '€ 1200 / LifeTime';
+      case 'mentoring':   return '€ 1250 / LifeTime';
       case 'community':   return '€ 50 / Monat';
       default:            return '';
     }
