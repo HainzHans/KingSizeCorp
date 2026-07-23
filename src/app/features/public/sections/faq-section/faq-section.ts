@@ -44,7 +44,7 @@ Ich verspreche dir kein Geld — ich verspreche dir Struktur. Keine Abkürzung �
     },
     {
       title: 'Was kostet das Mentoring?',
-      text: `1:1 Mentoring – 1.250 €
+      text: `1:1 Mentoring – 1600 €
 
       Einmaliges Investment — keine Raten, keine versteckten Kosten, keine Folgekosten.
 
