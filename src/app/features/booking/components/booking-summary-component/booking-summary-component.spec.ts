@@ -14,6 +14,11 @@ describe('BookingSummaryComponent', () => {
 
     fixture = TestBed.createComponent(BookingSummaryComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('product', 'mentoring');
+    fixture.componentRef.setInput('fullName', 'Max Mustermann');
+    fixture.componentRef.setInput('phone', '+49 123 456789');
+    fixture.componentRef.setInput('email', 'max@example.com');
+    fixture.componentRef.setInput('slot', undefined);
     await fixture.whenStable();
   });
 

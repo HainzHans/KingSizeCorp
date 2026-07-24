@@ -14,6 +14,10 @@ describe('AppointmentSlotCardComponent', () => {
 
     fixture = TestBed.createComponent(AppointmentSlotCardComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('slot', {
+      id: 'a1', type: 'mentoring', date: '2026-01-01', time: '14:00:00',
+      price: 1600, stripe_price_id: null, status: 'available', created_at: '',
+    });
     await fixture.whenStable();
   });
 

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {supabase} from '../../../core/supabase.client';
 import {UserPurchase} from '../../models/user-purchase.model';
 import {User} from '../../models/user.model';
+import {toGermanDate} from '../../utils/date.util';
 
 
 @Injectable({ providedIn: 'root' })
@@ -35,7 +36,7 @@ export class UserService {
 
       const purchase: UserPurchase = {
         type:   appt?.type === 'livetrading' ? 'Live Trading' : 'Mentoring',
-        date:   this.formatDate(appt?.date ?? ''),
+        date:   toGermanDate(appt?.date),
         time:   (appt?.time ?? '').slice(0, 5),
         status: booking.status === 'paid' ? 'Abgeschlossen' : 'Ausstehend',
         price:  appt?.price ?? 0,
@@ -62,11 +63,5 @@ export class UserService {
     }
 
     return Array.from(map.values());
-  }
-
-  private formatDate(date: string): string {
-    if (!date) return '';
-    const [year, month, day] = date.split('-');
-    return `${day}.${month}.${year}`;
   }
 }

@@ -14,6 +14,7 @@ describe('SlotPicker', () => {
 
     fixture = TestBed.createComponent(SlotPicker);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('slots', []);
     await fixture.whenStable();
   });
 

@@ -71,10 +71,4 @@ Dieses Mentoring ist keine einmalige Beratung. Es ist eine Begleitung mit klarer
       value: 4
     },
   ];
-
-  openedFAQ: number = 0;
-
-  toggleFAQ(index: number) {
-    this.openedFAQ = this.openedFAQ === index ? -1 : index;
-  }
 }

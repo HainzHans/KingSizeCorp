@@ -1,0 +1,129 @@
+<div class="app-layout">
+
+  <!-- ── Toolbar ── -->
+  <header class="toolbar">
+    <app-king-size-logo-component [isSmall]="true"
+    ></app-king-size-logo-component>
+    <span class="toolbar-title">KingSize Corp</span>
+    <div class="toolbar-actions">
+      <button class="toolbar-icon-btn"><i class="pi pi-bell"></i></button>
+
+      <div class="toolbar-user">
+        <button type="button"
+                class="toolbar-avatar"
+                (click)="toggleUserMenu()"
+                [attr.aria-expanded]="isUserMenuOpen()"
+                aria-haspopup="menu"
+                title="Konto">
+          <i class="pi pi-user"></i>
+        </button>
+
+        @if (isUserMenuOpen()) {
+          <div class="user-menu" role="menu">
+            <div class="user-menu-header">
+              <span class="user-menu-name">{{ displayName() }}</span>
+              <span class="user-menu-role">{{ roleLabel() }}</span>
+            </div>
+            <button type="button" class="user-menu-item" role="menuitem" (click)="openSettings()">
+              <i class="pi pi-cog"></i>
+              <span>Einstellungen</span>
+            </button>
+            <button type="button" class="user-menu-item user-menu-item--danger" role="menuitem" (click)="logout()">
+              <i class="pi pi-sign-out"></i>
+              <span>Abmelden</span>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Body (Sidebar + Content) ── -->
+  <div class="body-layout">
+
+    <nav class="sidebar" [class.expanded]="isExpanded()">
+
+      <!-- Sidebar Header -->
+      <div class="sidebar-header">
+        <button class="toggle-btn" (click)="toggle()" [title]="isExpanded() ? 'Zuklappen' : 'Aufklappen'">
+          <i class="pi" [class.pi-align-left]="isExpanded()" [class.pi-align-right]="!isExpanded()"></i>
+        </button>
+        <span class="logo-text">Navigation</span>
+      </div>
+
+      <!-- Navigation Items -->
+      <ul class="nav-list">
+        @for (item of navItems; track item.key) {
+          <li class="nav-item"
+              [class.active]="activeKey() === item.key"
+              (click)="setActive(item)">
+            <i class="pi {{ item.icon }} nav-icon"></i>
+            <span class="nav-label">{{ item.label }}</span>
+            @if (activeKey() === item.key) {
+              <span class="active-indicator"></span>
+            }
+          </li>
+        }
+      </ul>
+
+      <!-- Admin Section – nur für Admins -->
+      @if (isAdmin()) {
+        <div class="nav-admin">
+          <span class="nav-section-title">Admin</span>
+          <ul class="nav-list nav-list--admin">
+            @for (item of adminItems; track item.key) {
+              <li class="nav-item"
+                  [class.active]="activeKey() === item.key"
+                  (click)="setActive(item)">
+                <i class="pi {{ item.icon }} nav-icon"></i>
+                <span class="nav-label">{{ item.label }}</span>
+                @if (activeKey() === item.key) {
+                  <span class="active-indicator"></span>
+                }
+              </li>
+            }
+          </ul>
+        </div>
+      }
+
+      <!-- Footer -->
+      <div class="sidebar-footer">
+        <div class="user-avatar">
+          <i class="pi pi-user"></i>
+        </div>
+        <div class="user-info">
+          <span class="user-name">{{ displayName() }}</span>
+          <span class="user-role">{{ roleLabel() }}</span>
+        </div>
+        <button class="logout-btn" (click)="logout()" title="Abmelden">
+          <i class="pi pi-sign-out"></i>
+        </button>
+      </div>
+
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      @if (activeKey() === 'user-overview') {
+        <app-user-overview-page />
+      }
+
+      @if (activeKey() === 'settings') {
+        <app-settings-page />
+      }
+
+      @if (isAdmin()) {
+        @if (activeKey() === 'admin-overview') {
+          <app-admin-overview-page />
+        }
+        @if (activeKey() === 'admin-appointments') {
+          <app-termine-page />
+        }
+        @if (activeKey() === 'admin-community') {
+          <app-admin-community-page />
+        }
+      }
+    </main>
+
+  </div>
+</div>

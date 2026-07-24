@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -14,11 +14,12 @@ import {
   UpdateAppointmentDto,
 } from '../../../../shared/models/appointment.model';
 import { AppointmentService } from '../../../../shared/services/appointment-service/appointment.service';
-import { FormatDatePipe } from '../../../../shared/pipes/formatDatePipe';
+import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
 import {
   BookedAppointmentService
 } from '../../../../shared/services/booked-appointment-service/booked-appointment.service';
 import {BookedAppointment} from '../../../../shared/models/booked-appointment.model';
+import {toGermanDate, toIsoDate, toIsoTime} from '../../../../shared/utils/date.util';
 
 @Component({
   selector: 'app-termine-page',
@@ -54,16 +55,16 @@ export class AdminAppointmentPage implements OnInit {
   editingId:           string | null = null;
 
   // ── Data ─────────────────────────────────────────────────
-  liveTradingAppointments: Appointment[]       = [];
-  mentoringAppointments:   Appointment[]       = [];
-  bookedAppointments:      BookedAppointment[] = [];
+  // Signals, weil die App zonenlos läuft: ein einfaches Feld nach einem
+  // await würde die View nicht neu rendern.
+  readonly liveTradingAppointments = signal<Appointment[]>([]);
+  readonly mentoringAppointments   = signal<Appointment[]>([]);
+  readonly bookedAppointments      = signal<BookedAppointment[]>([]);
 
-  constructor(
-    private messageService:           MessageService,
-    private confirmationService:      ConfirmationService,
-    private appointmentService:       AppointmentService,
-    private bookedAppointmentService: BookedAppointmentService,
-  ) {}
+  private messageService           = inject(MessageService);
+  private confirmationService      = inject(ConfirmationService);
+  private appointmentService       = inject(AppointmentService);
+  private bookedAppointmentService = inject(BookedAppointmentService);
 
   async ngOnInit() {
     await this.loadAppointments();
@@ -72,7 +73,7 @@ export class AdminAppointmentPage implements OnInit {
   // ── Tab Switch ───────────────────────────────────────────
   setTab(tab: 'manage' | 'booked') {
     this.activeTab.set(tab);
-    if (tab === 'booked' && this.bookedAppointments.length === 0) {
+    if (tab === 'booked' && this.bookedAppointments().length === 0) {
       this.loadBooked();
     }
   }
@@ -81,13 +82,14 @@ export class AdminAppointmentPage implements OnInit {
   private async loadAppointments() {
     this.loading.set(true);
     try {
-      const [mentoring, livetrading] = await Promise.all([
+      // Das Aufräumen abgelaufener Termine läuft parallel zum Laden mit.
+      const [, mentoring, livetrading] = await Promise.all([
+        this.appointmentService.deleteExpired(),
         this.appointmentService.getAvailableByType('mentoring'),
         this.appointmentService.getAvailableByType('livetrading'),
-        this.appointmentService.deleteExpired(),
       ]);
-      this.mentoringAppointments   = mentoring;
-      this.liveTradingAppointments = livetrading;
+      this.mentoringAppointments.set(mentoring);
+      this.liveTradingAppointments.set(livetrading);
     } catch {
       this.messageService.add({
         severity: 'error',
@@ -99,18 +101,10 @@ export class AdminAppointmentPage implements OnInit {
     }
   }
 
-  private async deleteOldAppointments() {
-    this.mentoringAppointments.forEach((appointment) => {
-      if (new Date(appointment.date) < new Date() && appointment.status === 'available') {
-        this.appointmentService.delete(appointment.id)
-      }
-    })
-  }
-
   private async loadBooked() {
     this.loading.set(true);
     try {
-      this.bookedAppointments = await this.bookedAppointmentService.getUpcomingBooked();
+      this.bookedAppointments.set(await this.bookedAppointmentService.getUpcomingBooked());
     } catch {
       this.messageService.add({
         severity: 'error',
@@ -169,14 +163,8 @@ export class AdminAppointmentPage implements OnInit {
       return;
     }
 
-    const day     = String(this.dialogDate.getDate()).padStart(2, '0');
-    const month   = String(this.dialogDate.getMonth() + 1).padStart(2, '0');
-    const year    = this.dialogDate.getFullYear();
-    const dateStr = `${year}-${month}-${day}`;
-
-    const hours   = String(this.dialogTime.getHours()).padStart(2, '0');
-    const minutes = String(this.dialogTime.getMinutes()).padStart(2, '0');
-    const timeStr = `${hours}:${minutes}`;
+    const dateStr = toIsoDate(this.dialogDate);
+    const timeStr = toIsoTime(this.dialogTime);
 
     this.loading.set(true);
 
@@ -213,16 +201,11 @@ export class AdminAppointmentPage implements OnInit {
   confirmDelete(appt: Appointment, event: Event) {
     this.confirmationService.confirm({
       target:  event.target as EventTarget,
-      message: `${this.formatDate(appt.date)} um ${appt.time.slice(0, 5)} Uhr`,
+      message: `${toGermanDate(appt.date)} um ${appt.time.slice(0, 5)} Uhr`,
       header:  'Termin löschen',
       icon:    'pi pi-trash',
       accept:  () => this.deleteAppointment(appt),
     });
-  }
-
-  private formatDate(date: string): string {
-    const [year, month, day] = date.split('-');
-    return `${day}.${month}.${year}`;
   }
 
   private async deleteAppointment(appt: Appointment) {
@@ -239,28 +222,23 @@ export class AdminAppointmentPage implements OnInit {
   }
 
   // ── List helpers ─────────────────────────────────────────
+  /** Die Liste, in der ein Termin je nach Typ geführt wird. */
+  private listFor(appt: Appointment): WritableSignal<Appointment[]> {
+    return appt.type === 'livetrading'
+      ? this.liveTradingAppointments
+      : this.mentoringAppointments;
+  }
+
   private addToList(appt: Appointment) {
-    if (appt.type === 'livetrading') {
-      this.liveTradingAppointments = [...this.liveTradingAppointments, appt];
-    } else {
-      this.mentoringAppointments = [...this.mentoringAppointments, appt];
-    }
+    this.listFor(appt).update(list => [...list, appt]);
   }
 
   private replaceInList(appt: Appointment) {
-    if (appt.type === 'livetrading') {
-      this.liveTradingAppointments = this.liveTradingAppointments.map(a => a.id === appt.id ? appt : a);
-    } else {
-      this.mentoringAppointments = this.mentoringAppointments.map(a => a.id === appt.id ? appt : a);
-    }
+    this.listFor(appt).update(list => list.map(a => a.id === appt.id ? appt : a));
   }
 
   private removeFromList(appt: Appointment) {
-    if (appt.type === 'livetrading') {
-      this.liveTradingAppointments = this.liveTradingAppointments.filter(a => a.id !== appt.id);
-    } else {
-      this.mentoringAppointments = this.mentoringAppointments.filter(a => a.id !== appt.id);
-    }
+    this.listFor(appt).update(list => list.filter(a => a.id !== appt.id));
   }
 
   // ── Getter ───────────────────────────────────────────────

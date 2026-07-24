@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { AppointmentFormSection } from './appointment-form-section';
 
@@ -8,7 +9,8 @@ describe('AppointmentFormSection', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppointmentFormSection]
+      imports: [AppointmentFormSection],
+      providers: [provideRouter([])]
     })
     .compileComponents();
 

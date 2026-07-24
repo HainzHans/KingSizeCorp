@@ -72,7 +72,7 @@
             <span class="column-icon"><i class="pi pi-chart-line"></i></span>
             <div>
               <span class="column-label">LiveTrading</span>
-              <span class="column-count">{{ liveTradingAppointments.length }} Termine</span>
+              <span class="column-count">{{ liveTradingAppointments().length }} Termine</span>
             </div>
           </div>
           <button class="btn-add btn-add--livetrading" (click)="openCreate('livetrading')">
@@ -82,13 +82,13 @@
         </div>
 
         <div class="appointments-list">
-          @if (liveTradingAppointments.length === 0 && !loading()) {
+          @if (liveTradingAppointments().length === 0 && !loading()) {
             <div class="empty-state">
               <i class="pi pi-calendar-times"></i>
               <span>Noch keine Termine</span>
             </div>
           }
-          @for (appt of liveTradingAppointments; track appt.id) {
+          @for (appt of liveTradingAppointments(); track appt.id) {
             <div class="appt-card appt-card--livetrading">
               <div class="appt-card__accent"></div>
               <div class="appt-card__body">
@@ -121,7 +121,7 @@
             <span class="column-icon column-icon--mentoring"><i class="pi pi-users"></i></span>
             <div>
               <span class="column-label">Mentoring</span>
-              <span class="column-count">{{ mentoringAppointments.length }} Termine</span>
+              <span class="column-count">{{ mentoringAppointments().length }} Termine</span>
             </div>
           </div>
           <button class="btn-add btn-add--mentoring" (click)="openCreate('mentoring')">
@@ -131,13 +131,13 @@
         </div>
 
         <div class="appointments-list">
-          @if (mentoringAppointments.length === 0 && !loading()) {
+          @if (mentoringAppointments().length === 0 && !loading()) {
             <div class="empty-state">
               <i class="pi pi-calendar-times"></i>
               <span>Noch keine Termine</span>
             </div>
           }
-          @for (appt of mentoringAppointments; track appt.id) {
+          @for (appt of mentoringAppointments(); track appt.id) {
             @if (isAppointmentInFuture(appt)) {
               <div class="appt-card appt-card--mentoring">
                 <div class="appt-card__accent"></div>
@@ -182,16 +182,16 @@
         </div>
       }
 
-      @if (!loading() && bookedAppointments.length === 0) {
+      @if (!loading() && bookedAppointments().length === 0) {
         <div class="empty-state">
           <i class="pi pi-calendar-times"></i>
           <span>Keine bevorstehenden gebuchten Termine</span>
         </div>
       }
 
-      @if (!loading() && bookedAppointments.length > 0) {
+      @if (!loading() && bookedAppointments().length > 0) {
         <div class="booked-list">
-          @for (appt of bookedAppointments; track appt.id) {
+          @for (appt of bookedAppointments(); track appt.id) {
             <div class="booked-card" [class.booked-card--mentoring]="appt.type === 'mentoring'">
               <div class="booked-card__accent"></div>
 

@@ -12,35 +12,35 @@
     <div class="stat-card stat-card--active">
       <div class="stat-card__icon"><i class="pi pi-check-circle"></i></div>
       <div class="stat-card__body">
-        <span class="stat-card__value">{{ totalActive }}</span>
+        <span class="stat-card__value">{{ totalActive() }}</span>
         <span class="stat-card__label">Aktive Abos</span>
       </div>
     </div>
     <div class="stat-card stat-card--pending">
       <div class="stat-card__icon"><i class="pi pi-clock"></i></div>
       <div class="stat-card__body">
-        <span class="stat-card__value">{{ totalPending }}</span>
+        <span class="stat-card__value">{{ totalPending() }}</span>
         <span class="stat-card__label">Ausstehend</span>
       </div>
     </div>
     <div class="stat-card stat-card--cancelled">
       <div class="stat-card__icon"><i class="pi pi-times-circle"></i></div>
       <div class="stat-card__body">
-        <span class="stat-card__value">{{ totalCancelled }}</span>
+        <span class="stat-card__value">{{ totalCancelled() }}</span>
         <span class="stat-card__label">Gekündigt</span>
       </div>
     </div>
     <div class="stat-card stat-card--expired">
       <div class="stat-card__icon"><i class="pi pi-ban"></i></div>
       <div class="stat-card__body">
-        <span class="stat-card__value">{{ totalExpired }}</span>
+        <span class="stat-card__value">{{ totalExpired() }}</span>
         <span class="stat-card__label">Abgelaufen</span>
       </div>
     </div>
   </div>
 
   <section class="table-section">
-    <p-table [value]="filtered" [paginator]="true" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }">
+    <p-table [value]="filtered()" [paginator]="true" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }">
       <ng-template #caption>
         <div style="display:flex; align-items:center; gap:0.5rem; padding-bottom:0.5rem; color: var(--primary-grey)">
           <i class="pi pi-search"></i>

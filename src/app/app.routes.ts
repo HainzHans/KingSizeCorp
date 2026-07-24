@@ -1,14 +1,11 @@
 import { Routes } from '@angular/router';
 import {KingSizePage} from './features/public/pages/king-size-page/king-size-page';
 import {ContactPage} from './features/booking/pages/contact-page/contact-page';
-import {adminGuard} from './core/admin.guard';
-import {AdminLoginComponent} from './features/admin/components/admin-login-component/admin-login-component';
-import {SidebarComponent} from './features/admin/pages/sidebar-component/sidebar-component';
-import {AdminOverviewPage} from './features/admin/sections/admin-overview-page/admin-overview-page';
-import {AdminAppointmentPage} from './features/admin/sections/admin-appointment-page/admin-appointment-page';
-import {DataPrivacyPage} from './shared/pages/data-privacy-page/data-privacy-page';
-import {ImpressumPage} from './shared/pages/impressum-page/impressum-page';
-import {AgbPage} from './shared/pages/agb-page/agb-page';
+import {authGuard} from './core/auth.guard';
+import {LoginPage} from './features/auth/pages/login-page/login-page';
+import {DataPrivacyPage} from './features/public/pages/data-privacy-page/data-privacy-page';
+import {ImpressumPage} from './features/public/pages/impressum-page/impressum-page';
+import {AgbPage} from './features/public/pages/agb-page/agb-page';
 
 export const routes: Routes = [
   { path: '', component: KingSizePage },
@@ -16,15 +13,16 @@ export const routes: Routes = [
   { path: 'datenschutz', component: DataPrivacyPage},
   { path: 'impressum', component: ImpressumPage},
   { path: 'agb', component: AgbPage},
-  { path: 'admin-login', component: AdminLoginComponent },
+  { path: 'login', component: LoginPage },
+  { path: 'admin-login', redirectTo: 'login', pathMatch: 'full' },
   {
-    path: 'admin',
-    loadComponent: () => import('./features/admin/pages/sidebar-component/sidebar-component')
-      .then(m => m.SidebarComponent),
-    canActivate: [adminGuard],
-    children: [
-      { path: 'admin-overview', component: AdminOverviewPage, canActivate: [adminGuard] },
-      { path: 'admin-appointments', component: AdminAppointmentPage, canActivate: [adminGuard] },
-    ]
+    // Ein Bereich für alle eingeloggten Mitglieder. Ob der Admin-Block
+    // erscheint, entscheidet die Sidebar anhand der Rolle – abgesichert
+    // wird das serverseitig über die RLS-Policies (public.is_admin()).
+    path: 'dashboard',
+    loadComponent: () => import('./features/dashboard/pages/dashboard-page/dashboard-page')
+      .then(m => m.DashboardPage),
+    canActivate: [authGuard],
   },
+  { path: 'admin', redirectTo: 'dashboard', pathMatch: 'full' },
 ];

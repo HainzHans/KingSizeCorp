@@ -1,4 +1,4 @@
-import {Component, output} from '@angular/core';
+import {Component, OnInit, output} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {InputText} from 'primeng/inputtext';
 
@@ -11,7 +11,7 @@ import {InputText} from 'primeng/inputtext';
   templateUrl: './contact-form.html',
   styleUrl: './contact-form.css',
 })
-export class ContactForm {
+export class ContactForm implements OnInit {
   form = output<FormGroup>();
 
   contactForm!: FormGroup;

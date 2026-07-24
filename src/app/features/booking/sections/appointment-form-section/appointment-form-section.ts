@@ -179,21 +179,4 @@ export class AppointmentFormSection implements OnInit {
     }
   }
 
-  isSlotInFuture(date: string) {
-    return new Date(date) > new Date();
-  }
-
-  /* ── Computed Helpers ───────────────────────────────────── */
-  get stepLabels(): string[] {
-    return this.isCommunity()
-      ? ['Produkt', 'Kontakt', 'Übersicht']
-      : ['Produkt', 'Kontakt', 'Termin', 'Übersicht'];
-  }
-
-  // Schritt-Nummer für Anzeige (Community zeigt 1,2,3 statt 1,2,4)
-  get displayStep(): number {
-    if (!this.isCommunity()) return this.currentStep();
-    if (this.currentStep() <= 2) return this.currentStep();
-    return 3; // Schritt 4 wird als "3" angezeigt bei Community
-  }
 }

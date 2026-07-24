@@ -16,8 +16,8 @@ export class HeaderSection {
 
   constructor(private router: Router) {}
 
-  navigateHome() {
-    this.router.navigate([''])
+  navigateToLogin() {
+    this.router.navigate(['/login'])
   }
 
 }

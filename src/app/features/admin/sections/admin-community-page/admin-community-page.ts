@@ -1,12 +1,14 @@
-// src/app/pages/admin/admin-community-page/admin-community-page.ts
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { InputTextModule } from 'primeng/inputtext';
 import { CommunitySubscriptionService } from '../../../../shared/services/community-subscription-service/community-subscription.service';
-import {CommunitySubscription} from '../../../../shared/models/community-subscription.model';
+import { CommunitySubscription } from '../../../../shared/models/community-subscription.model';
+import { toGermanDate, toIsoDate } from '../../../../shared/utils/date.util';
+
+type SubscriptionStatus = CommunitySubscription['status'];
 
 @Component({
   selector: 'app-admin-community-page',
@@ -16,42 +18,36 @@ import {CommunitySubscription} from '../../../../shared/models/community-subscri
   styleUrl: './admin-community-page.css',
 })
 export class AdminCommunityPage implements OnInit {
-  members: CommunitySubscription[] = [];
-  loading = false;
-  searchQuery = '';
+  private communityService = inject(CommunitySubscriptionService);
 
-  constructor(
-    private communityService: CommunitySubscriptionService,
-    private cdr: ChangeDetectorRef,
-  ) {}
+  // Signals statt einfacher Felder: die App läuft zonenlos, ein normales
+  // Feld nach einem await würde die View nicht neu rendern.
+  readonly members     = signal<CommunitySubscription[]>([]);
+  readonly searchQuery = signal('');
+
+  readonly filtered = computed(() => {
+    const query = this.searchQuery().trim().toLowerCase();
+    if (!query) return this.members();
+    return this.members().filter(m =>
+      m.customer_name.toLowerCase().includes(query) ||
+      m.customer_email.toLowerCase().includes(query)
+    );
+  });
+
+  readonly totalActive    = this.countByStatus('paid');
+  readonly totalCancelled = this.countByStatus('cancelled');
+  readonly totalPending   = this.countByStatus('pending');
+  readonly totalExpired   = this.countByStatus('expired');
 
   async ngOnInit() {
-    this.loading = true;
     try {
-      this.members = await this.communityService.getCommunitySubscriptions();
+      this.members.set(await this.communityService.getCommunitySubscriptions());
     } catch (e) {
       console.error('Fehler beim Laden:', e);
-    } finally {
-      this.loading = false;
-      this.cdr.detectChanges();
     }
   }
 
-  get filtered(): CommunitySubscription[] {
-    if (!this.searchQuery.trim()) return this.members;
-    const q = this.searchQuery.toLowerCase();
-    return this.members.filter(m =>
-      m.customer_name.toLowerCase().includes(q) ||
-      m.customer_email.toLowerCase().includes(q)
-    );
-  }
-
-  get totalActive()    { return this.members.filter(m => m.status === 'paid').length; }
-  get totalCancelled() { return this.members.filter(m => m.status === 'cancelled').length; }
-  get totalPending()   { return this.members.filter(m => m.status === 'pending').length; }
-  get totalExpired()   { return this.members.filter(m => m.status === 'expired').length; }
-
-  getSeverity(status: string): 'success' | 'warn' | 'danger' | 'secondary' {
+  getSeverity(status: SubscriptionStatus): 'success' | 'warn' | 'danger' | 'secondary' {
     switch (status) {
       case 'paid':      return 'success';
       case 'pending':   return 'warn';
@@ -60,7 +56,7 @@ export class AdminCommunityPage implements OnInit {
     }
   }
 
-  getStatusLabel(status: string): string {
+  getStatusLabel(status: SubscriptionStatus): string {
     switch (status) {
       case 'paid':      return 'Aktiv';
       case 'pending':   return 'Ausstehend';
@@ -70,8 +66,12 @@ export class AdminCommunityPage implements OnInit {
     }
   }
 
+  /** created_at ist ein Zeitstempel, kein reines Datum – daher der Umweg über Date. */
   formatDate(iso: string): string {
-    const d = new Date(iso);
-    return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`;
+    return toGermanDate(toIsoDate(new Date(iso)));
+  }
+
+  private countByStatus(status: SubscriptionStatus) {
+    return computed(() => this.members().filter(m => m.status === status).length);
   }
 }

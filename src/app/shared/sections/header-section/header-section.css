@@ -28,3 +28,35 @@
   display: flex;
   gap: 1rem;
 }
+
+.login-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--primary-white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 200ms ease, border-color 200ms ease;
+}
+
+.login-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.32);
+}
+
+.login-btn i {
+  font-size: 0.85rem;
+}
+
+@media (max-width: 560px) {
+  .login-btn span {
+    display: none;
+  }
+}

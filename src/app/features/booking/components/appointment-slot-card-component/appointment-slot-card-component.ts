@@ -1,7 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Appointment} from '../../../../shared/models/appointment.model';
-import {FormatDatePipe} from '../../../../shared/pipes/formatDatePipe';
+import {FormatDatePipe} from '../../../../shared/pipes/format-date.pipe';
 
 @Component({
   selector: 'app-appointment-slot-card',

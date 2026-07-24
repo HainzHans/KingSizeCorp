@@ -1,5 +1,5 @@
-import {Component, input} from '@angular/core';
-import {NavigationService} from '../../services/navigation-service/navigation-service';
+import {Component, inject, input} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-king-size-logo-component',
@@ -9,13 +9,12 @@ import {NavigationService} from '../../services/navigation-service/navigation-se
 })
 export class KingSizeLogoComponent {
 
+  private router = inject(Router);
+
   isSmall = input<boolean>(false);
 
-  constructor(private navigationService: NavigationService) {
-  }
-
   navigateHome() {
-    this.navigationService.navigateTo('');
+    this.router.navigate(['']);
   }
 
 }

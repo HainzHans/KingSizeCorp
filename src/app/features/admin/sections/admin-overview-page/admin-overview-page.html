@@ -13,7 +13,7 @@
     <div class="stat-card stat-card--users">
       <div class="stat-card__icon"><i class="pi pi-users"></i></div>
       <div class="stat-card__body">
-        <span class="stat-card__value">{{ totalUsers }}</span>
+        <span class="stat-card__value">{{ totalUsers() }}</span>
         <span class="stat-card__label">Nutzer gesamt</span>
       </div>
       <div class="stat-card__bar" style="--fill: 100%"></div>
@@ -21,7 +21,7 @@
     <div class="stat-card stat-card--revenue">
       <div class="stat-card__icon"><i class="pi pi-euro"></i></div>
       <div class="stat-card__body">
-        <span class="stat-card__value">{{ totalRevenue | currency:'EUR':'symbol':'1.0-0' }}</span>
+        <span class="stat-card__value">{{ totalRevenue() | currency:'EUR':'symbol':'1.0-0' }}</span>
         <span class="stat-card__label">Gesamtumsatz</span>
       </div>
       <div class="stat-card__bar" style="--fill: 100%"></div>
@@ -29,7 +29,7 @@
     <div class="stat-card stat-card--purchases">
       <div class="stat-card__icon"><i class="pi pi-shopping-bag"></i></div>
       <div class="stat-card__body">
-        <span class="stat-card__value">{{ totalPurchases }}</span>
+        <span class="stat-card__value">{{ totalPurchases() }}</span>
         <span class="stat-card__label">Käufe gesamt</span>
       </div>
       <div class="stat-card__bar" style="--fill: 100%"></div>
@@ -37,10 +37,10 @@
     <div class="stat-card stat-card--pending">
       <div class="stat-card__icon"><i class="pi pi-clock"></i></div>
       <div class="stat-card__body">
-        <span class="stat-card__value">{{ pendingOrders }}</span>
+        <span class="stat-card__value">{{ pendingOrders() }}</span>
         <span class="stat-card__label">Ausstehende Käufe</span>
       </div>
-      <div class="stat-card__bar" [style]="'--fill: ' + (pendingOrders / (totalPurchases || 1) * 100) + '%'"></div>
+      <div class="stat-card__bar" [style]="'--fill: ' + (pendingOrders() / (totalPurchases() || 1) * 100) + '%'"></div>
     </div>
   </div>
 
@@ -52,11 +52,9 @@
     </div>
 
     <p-table
-      [value]="filteredUsers"
+      [value]="filteredUsers()"
       dataKey="email"
       [expandedRowKeys]="expandedRows"
-      (onRowExpand)="onRowExpand($event)"
-      (onRowCollapse)="onRowCollapse($event)"
       [paginator]="true"
       [rows]="10"
       [sortMode]="'single'"
@@ -135,7 +133,7 @@
           </td>
           <td class="cell-muted">{{ getUserRevenue(user) | currency:'EUR':'symbol':'1.0-0' }}</td>
           <td>
-            <p-tag [value]="user.status" [severity]="getUserSeverity(user.status)" />
+            <p-tag [value]="user.status" [severity]="getStatusSeverity(user.status)" />
           </td>
         </tr>
       </ng-template>
@@ -179,7 +177,7 @@
                       </td>
                       <td><span class="inline-chip"><i class="pi pi-calendar"></i>{{ p.date }}</span></td>
                       <td><span class="inline-chip"><i class="pi pi-clock"></i>{{ p.time }} Uhr</span></td>
-                      <td><p-tag [value]="p.status" [severity]="getPurchaseSeverity(p.status)" /></td>
+                      <td><p-tag [value]="p.status" [severity]="getStatusSeverity(p.status)" /></td>
                       <td><span class="price-cell">{{ p.price | currency:'EUR':'symbol':'1.0-0' }}</span></td>
                     </tr>
                   </ng-template>

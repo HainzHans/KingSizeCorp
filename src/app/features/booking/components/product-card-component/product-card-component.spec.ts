@@ -14,6 +14,11 @@ describe('ProductCardComponent', () => {
 
     fixture = TestBed.createComponent(ProductCardComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('name', 'Mentoring');
+    fixture.componentRef.setInput('description', 'Beschreibung');
+    fixture.componentRef.setInput('price', '€ 1600');
+    fixture.componentRef.setInput('priceUnit', '/ LifeTime');
+    fixture.componentRef.setInput('features', ['Persönlicher Mentor']);
     await fixture.whenStable();
   });
 

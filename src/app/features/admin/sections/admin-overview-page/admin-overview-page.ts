@@ -1,14 +1,14 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TableModule, TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
+import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { InputTextModule } from 'primeng/inputtext';
-import {UserService} from '../../../../shared/services/user-service/user.service';
-import {User} from '../../../../shared/models/user.model';
-
+import { UserService } from '../../../../shared/services/user-service/user.service';
+import { User } from '../../../../shared/models/user.model';
+import { UserPurchase } from '../../../../shared/models/user-purchase.model';
 
 @Component({
   selector: 'app-admin-overview-page',
@@ -26,70 +26,67 @@ import {User} from '../../../../shared/models/user.model';
   styleUrl: './admin-overview-page.css',
 })
 export class AdminOverviewPage implements OnInit {
+  private userService = inject(UserService);
 
-  expandedRows: any = {};
-  searchEmail       = '';
-  users: User[]  = [];
-  loading           = false;
+  // Signals statt einfacher Felder: die App läuft zonenlos, ein normales
+  // Feld nach einem await würde die View nicht neu rendern.
+  readonly users       = signal<User[]>([]);
+  readonly searchEmail = signal('');
 
-  constructor(private adminOverviewService: UserService,
-              private cdr: ChangeDetectorRef,) {}
+  expandedRows: Record<string, boolean> = {};
+
+  // ── Gefilterte User ──────────────────────────────────────
+  readonly filteredUsers = computed(() => {
+    const query = this.searchEmail().trim().toLowerCase();
+    if (!query) return this.users();
+    return this.users().filter(u =>
+      u.email.toLowerCase().includes(query) ||
+      u.name.toLowerCase().includes(query)
+    );
+  });
+
+  // ── Stats ────────────────────────────────────────────────
+  private readonly allPurchases = computed(() => this.users().flatMap(u => u.purchases));
+
+  readonly totalUsers     = computed(() => this.users().length);
+  readonly totalPurchases = computed(() => this.allPurchases().length);
+  readonly totalRevenue   = computed(() => sumRevenue(this.allPurchases()));
+  readonly pendingOrders  = computed(
+    () => this.allPurchases().filter(p => p.status === 'Ausstehend').length
+  );
 
   async ngOnInit() {
-    this.loading = true;
     try {
-      this.users = await this.adminOverviewService.getUsers();
+      this.users.set(await this.userService.getUsers());
     } catch (e) {
       console.error('Fehler beim Laden:', e);
-    } finally {
-      this.loading = false;
-      this.cdr.detectChanges(); // ← Angular explizit informieren
     }
   }
 
-  // ── Gefilterte User ──────────────────────────────────────
-  get filteredUsers(): User[] {
-    if (!this.searchEmail.trim()) return this.users;
-    const q = this.searchEmail.toLowerCase();
-    return this.users.filter(u =>
-      u.email.toLowerCase().includes(q) ||
-      u.name.toLowerCase().includes(q)
-    );
-  }
-
-  // ── Stats ────────────────────────────────────────────────
-  get totalUsers()     { return this.users.length; }
-  get totalRevenue()   { return this.users.flatMap(u => u.purchases).filter(p => p.status === 'Abgeschlossen').reduce((s, p) => s + p.price, 0); }
-  get pendingOrders()  { return this.users.flatMap(u => u.purchases).filter(p => p.status === 'Ausstehend').length; }
-  get totalPurchases() { return this.users.flatMap(u => u.purchases).length; }
-
   getUserRevenue(user: User): number {
-    return user.purchases
-      .filter((p) => p.status === 'Abgeschlossen')
-      .reduce((s, p) => s + p.price, 0);
+    return sumRevenue(user.purchases);
   }
 
   // ── Expand / Collapse ────────────────────────────────────
-  expandAll() {
-    this.expandedRows = this.filteredUsers.reduce((acc: any, u) => {
-      acc[u.email] = true;
-      return acc;
-    }, {});
+  expandAll(): void {
+    this.expandedRows = Object.fromEntries(
+      this.filteredUsers().map(u => [u.email, true])
+    );
   }
 
-  collapseAll() {
+  collapseAll(): void {
     this.expandedRows = {};
   }
 
-  onRowExpand(event: TableRowExpandEvent)    {}
-  onRowCollapse(event: TableRowCollapseEvent) {}
-
-  // ── Severity Helpers ─────────────────────────────────────
-  getUserSeverity(status: string): 'success' | 'warn' {
+  // ── Severity Helper ──────────────────────────────────────
+  getStatusSeverity(status: string): 'success' | 'warn' {
     return status === 'Abgeschlossen' ? 'success' : 'warn';
   }
+}
 
-  getPurchaseSeverity(status: string): 'success' | 'warn' {
-    return status === 'Abgeschlossen' ? 'success' : 'warn';
-  }
+/** Summiert nur abgeschlossene Käufe – ausstehende zählen nicht als Umsatz. */
+function sumRevenue(purchases: UserPurchase[]): number {
+  return purchases
+    .filter(p => p.status === 'Abgeschlossen')
+    .reduce((sum, p) => sum + p.price, 0);
 }

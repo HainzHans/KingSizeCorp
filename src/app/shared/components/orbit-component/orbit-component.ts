@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy} from '@angular/core';
 
 @Component({
   selector: 'app-orbit-component',
@@ -6,7 +6,7 @@ import {AfterViewInit, Component, ElementRef} from '@angular/core';
   templateUrl: './orbit-component.html',
   styleUrl: './orbit-component.css',
 })
-export class OrbitComponent implements AfterViewInit {
+export class OrbitComponent implements AfterViewInit, OnDestroy {
   private animationId: number = 0;
 
   constructor(private el: ElementRef) {}

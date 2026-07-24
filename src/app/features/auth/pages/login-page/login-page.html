@@ -1,0 +1,46 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <i class="pi pi-lock login-icon"></i>
+
+    <div class="form-field">
+      <label for="login-email">E-Mail</label>
+      <input
+        id="login-email"
+        type="email"
+        pInputText
+        [(ngModel)]="email"
+        placeholder="deine@email.de"
+        autocomplete="username"
+        (keyup.enter)="login()"
+      />
+    </div>
+
+    <div class="form-field">
+      <label for="login-password">Passwort</label>
+      <p-password
+        inputId="login-password"
+        [(ngModel)]="password"
+        [feedback]="false"
+        toggleMask="true"
+        placeholder="Passwort eingeben"
+        (keyup.enter)="login()"
+      ></p-password>
+    </div>
+
+    <p-button
+      label="Anmelden"
+      icon="pi pi-sign-in"
+      (click)="login()"
+      [loading]="loading"
+      styleClass="w-full"
+    ></p-button>
+
+    @if (error) {
+      <p class="error">{{ error }}</p>
+    }
+
+    <button class="back-link" type="button" (click)="backToHome()">
+      Zurück zur Startseite
+    </button>
+  </div>
+</div>
