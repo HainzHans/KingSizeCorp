@@ -10,7 +10,7 @@
           <br>
           in die Welt des
           <br>
-          <h2 class="green-text">Tradings.</h2>
+          <div class="green-text">Tradings.</div>
         </h2>
         <p class="grey-text community-description">
           Noch nicht bereit für 1:1 Mentoring? Kein Problem.
@@ -20,18 +20,12 @@
         </p>
 
         <div class="community-features">
-          <div class="community-feature-item">
-            <i class="pi pi-chart-line"></i>
-            <span>Tägliche Marktanalysen</span>
-          </div>
-          <div class="community-feature-item">
-            <i class="pi pi-megaphone"></i>
-            <span>Finanz‑ und Wirtschaftsnews</span>
-          </div>
-          <div class="community-feature-item">
-            <i class="pi pi-bitcoin"></i>
-            <span>Fundiertes Krypto‑Know‑how</span>
-          </div>
+          @for (feature of features; track feature.label) {
+            <div class="community-feature-item">
+              <i class="pi {{ feature.icon }}"></i>
+              <span>{{ feature.label }}</span>
+            </div>
+          }
         </div>
 
         <app-king-size-button
@@ -57,41 +51,24 @@
           <div class="community-card-divider"></div>
 
           <ul class="community-card-list">
-            <li>
-              <i class="pi pi-check community-check-icon"></i>
-              <span>Exklusive KingSize Community</span>
-            </li>
-            <li>
-              <i class="pi pi-check community-check-icon"></i>
-              <span>Tägliche Marktanalysen</span>
-            </li>
-            <li>
-              <i class="pi pi-check community-check-icon"></i>
-              <span>Finanz‑ und Wirtschaftsnews</span>
-            </li>
-            <li>
-              <i class="pi pi-check community-check-icon"></i>
-              <span>Fundiertes Krypto‑Know‑how</span>
-            </li>
-
+            @for (perk of perks; track perk) {
+              <li>
+                <i class="pi pi-check community-check-icon"></i>
+                <span>{{ perk }}</span>
+              </li>
+            }
           </ul>
 
           <div class="community-card-divider"></div>
 
           <div class="community-compare">
             <span class="grey-text compare-label">Im Vergleich</span>
-            <div class="compare-row">
-              <span class="compare-tier community-tier-active">Community</span>
-              <span class="compare-price green-text">€ 50 / Monat</span>
-            </div>
-            <div class="compare-row compare-row-muted">
-              <span class="compare-tier">Live Trading</span>
-              <span class="compare-price grey-text">€ 150 / Session</span>
-            </div>
-            <div class="compare-row compare-row-muted">
-              <span class="compare-tier">Mentoring</span>
-              <span class="compare-price grey-text">€ 1600 / LifeTime</span>
-            </div>
+            @for (row of compareRows; track row.tier) {
+              <div class="compare-row" [class.compare-row-muted]="!row.active">
+                <span class="compare-tier" [class.community-tier-active]="row.active">{{ row.tier }}</span>
+                <span class="compare-price" [class.green-text]="row.active" [class.grey-text]="!row.active">{{ row.price }}</span>
+              </div>
+            }
           </div>
 
         </div>

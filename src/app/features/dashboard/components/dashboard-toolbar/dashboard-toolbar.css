@@ -1,0 +1,153 @@
+/* Variablen werden von der dashboard-page über die CSS-Cascade vererbt.
+   display:contents lässt die .toolbar der direkte Flex-Child des
+   App-Layouts bleiben. */
+:host {
+  display: contents;
+}
+
+/* ── Toolbar ─────────────────────────────────────────────── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  height: var(--toolbar-height);
+  padding: 0 16px;
+  background: var(--toolbar-bg);
+  border-bottom: 1px solid var(--sidebar-border);
+  gap: 12px;
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.toolbar-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.2px;
+  flex: 1;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbar-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 200ms ease, color 200ms ease;
+
+  i { font-size: 16px; }
+}
+.toolbar-icon-btn:hover {
+  background: var(--item-hover-bg);
+  color: var(--text-primary);
+}
+
+/* ── User-Menü ───────────────────────────────────────────── */
+.toolbar-user {
+  position: relative;
+}
+
+.toolbar-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  cursor: pointer;
+  transition: filter 200ms ease;
+
+  i { font-size: 15px; }
+}
+
+.toolbar-avatar:hover,
+.toolbar-avatar[aria-expanded='true'] {
+  filter: brightness(1.4);
+}
+
+.user-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 208px;
+  padding: 6px;
+  background: var(--sidebar-bg);
+  border: 1px solid var(--sidebar-border);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  z-index: 200;
+}
+
+.user-menu-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px 10px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+
+.user-menu-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.user-menu-role {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.user-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: background 200ms ease, color 200ms ease;
+
+  i {
+    font-size: 15px;
+    width: 18px;
+    text-align: center;
+  }
+}
+
+.user-menu-item:hover {
+  background: var(--item-hover-bg);
+  color: var(--text-primary);
+}
+
+.user-menu-item--danger {
+  color: #e05252;
+}
+
+.user-menu-item--danger:hover {
+  color: #ff6b6b;
+}

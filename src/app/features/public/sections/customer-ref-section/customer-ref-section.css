@@ -88,49 +88,6 @@
 
 
 
-.customer-ref-slider-card {
-  min-width: 200px;
-  display: flex;
-  align-items: center;
-  flex: 1;
-  gap: 1rem;
-  padding: 1rem;
-  border-radius: 1.5rem;
-
-  /* Hintergrund – stärker, klarer */
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(14px);
-
-  /* Doppelte Border für Premium-Look */
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  outline: 1px solid rgba(0, 0, 0, 0.4);
-
-  /* Tiefer, weicher Schatten */
-  box-shadow:
-    0 8px 28px rgba(0, 0, 0, 0.35),
-    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
-
-  /* Leichter innerer Glow für mehr Tiefe */
-  background-image: radial-gradient(
-    circle at top,
-    rgba(255, 255, 255, 0.08),
-    rgba(255, 255, 255, 0) 60%
-  );
-}
-
-.stars {
-  display: flex;
-  gap: 0.2rem;
-}
-
-.star-icon {
-  font-size: 1.3rem;
-  color: rgba(255,255,255,0.25); /* graue Sterne */
-}
-
-.active-star {
-  color: var(--primary-green); /* gelbe Sterne */
-}
 @media (min-width: 1024px) {
 
   /* Animation deaktivieren */

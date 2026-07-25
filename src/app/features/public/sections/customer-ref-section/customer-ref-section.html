@@ -11,54 +11,15 @@
 
   <div class="customer-ref-slider-container">
     <div class="customer-ref-slider-top">
-
-      @for (customer of topCustomers; track customer) {
-        <div class="customer-ref-slider-card">
-          <i style="border: 1px solid green; padding: 0.5rem; border-radius: 2rem" class="pi pi-user"></i>
-
-          <div style="display: flex; flex-direction: column; gap: 0.2rem; align-items: center">
-            <span>{{ customer.name }}</span>
-
-            <div class="stars">
-              @for (i of [1,2,3,4,5]; track i) {
-                <i class="pi"
-                   [ngClass]="{
-                    'pi-star-fill active-star': i <= customer.review,
-                    'pi-star': i > customer.review
-                  }"
-                ></i>
-              }
-            </div>
-          </div>
-        </div>
+      @for (customer of topCustomers; track $index) {
+        <app-customer-ref-card [name]="customer.name" [review]="customer.review" />
       }
-
     </div>
     <div class="customer-ref-slider-bottom">
-      @for (customer of topCustomers; track customer) {
-        <div class="customer-ref-slider-card">
-          <i style="border: 1px solid green; padding: 0.5rem; border-radius: 2rem" class="pi pi-user"></i>
-
-          <div style="display: flex; flex-direction: column; gap: 0.2rem; align-items: center">
-            <span>{{ customer.name }}</span>
-
-            <div class="stars">
-              @for (i of [1,2,3,4,5]; track i) {
-                <i class="pi"
-                  [ngClass]="{
-                    'pi-star-fill active-star': i <= customer.review,
-                    'pi-star': i > customer.review
-                  }"
-                ></i>
-              }
-            </div>
-          </div>
-        </div>
+      @for (customer of topCustomers; track $index) {
+        <app-customer-ref-card [name]="customer.name" [review]="customer.review" />
       }
-
     </div>
-
-
   </div>
 
 </section>

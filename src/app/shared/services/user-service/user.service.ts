@@ -35,7 +35,7 @@ export class UserService {
       const appt  = booking.appointments as any;
 
       const purchase: UserPurchase = {
-        type:   appt?.type === 'livetrading' ? 'Live Trading' : 'Mentoring',
+        type:   this.purchaseTypeLabel(appt?.type),
         date:   toGermanDate(appt?.date),
         time:   (appt?.time ?? '').slice(0, 5),
         status: booking.status === 'paid' ? 'Abgeschlossen' : 'Ausstehend',
@@ -63,5 +63,19 @@ export class UserService {
     }
 
     return Array.from(map.values());
+  }
+
+  /**
+   * Label für den Buchungstyp. Deckt alle drei Enum-Werte ab; ein
+   * fehlgeschlagener Join (type undefined) wird nicht mehr stillschweigend
+   * zu „Mentoring", sondern explizit als unbekannt ausgewiesen.
+   */
+  private purchaseTypeLabel(type: string | null | undefined): string {
+    switch (type) {
+      case 'livetrading': return 'Live Trading';
+      case 'mentoring':   return 'Mentoring';
+      case 'community':   return 'Community';
+      default:            return 'Unbekannt';
+    }
   }
 }

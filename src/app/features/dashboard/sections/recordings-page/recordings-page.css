@@ -1,0 +1,162 @@
+:host {
+  display: block;
+  --accent:      var(--primary-green, #22c55e);
+  --accent-soft: rgba(34, 197, 94, 0.12);
+}
+
+.videothek {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: var(--primary-white, #f1f5f9);
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.page-header__text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.page-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.page-title {
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.page-subtitle {
+  margin: 2px 0 0;
+  font-size: 13.5px;
+  color: var(--primary-grey, #94a3b8);
+}
+
+.count-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  border: 1px solid rgba(34, 197, 94, 0.22);
+  color: var(--accent);
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+
+  i { font-size: 12px; }
+}
+
+/* ── Suche ──────────────────────────────────────────────── */
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 420px;
+}
+
+.search__icon {
+  position: absolute;
+  left: 14px;
+  font-size: 14px;
+  color: var(--primary-grey, #94a3b8);
+  pointer-events: none;
+}
+
+.search__input {
+  width: 100%;
+  padding: 11px 40px 11px 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--primary-white, #f1f5f9);
+  font-family: inherit;
+  font-size: 13.5px;
+  transition: border-color 160ms, background 160ms, box-shadow 160ms;
+}
+
+.search__input::placeholder {
+  color: var(--primary-grey, #94a3b8);
+}
+
+.search__input:focus {
+  outline: none;
+  border-color: rgba(46, 204, 113, 0.45);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.12);
+}
+
+/* native „x" der type=search-Felder ausblenden – wir nutzen unseren Button */
+.search__input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search__clear {
+  position: absolute;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--primary-grey, #94a3b8);
+  cursor: pointer;
+  transition: color 140ms, background 140ms;
+
+  i { font-size: 12px; }
+
+  &:hover {
+    color: var(--primary-white, #f1f5f9);
+    background: rgba(255, 255, 255, 0.07);
+  }
+}
+
+/* ── Zustände (Laden / leer / Fehler) ──────────────────── */
+.state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 56px 16px;
+  color: var(--primary-grey, #94a3b8);
+  font-size: 13.5px;
+  border: 1px dashed rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+
+  i { font-size: 22px; }
+}
+
+/* ── Regal (Grid) ──────────────────────────────────────── */
+.shelf {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+  gap: 22px 18px;
+}
+
+@media (max-width: 520px) {
+  .shelf {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 18px 12px;
+  }
+}

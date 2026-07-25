@@ -1,0 +1,70 @@
+<p-dialog
+  [header]="editMode() ? 'Aufzeichnung bearbeiten' : 'Aufzeichnung hinzufügen'"
+  [visible]="visible()"
+  (visibleChange)="visible.set($event)"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [style]="{ width: '460px' }"
+>
+  <div class="dialog-body">
+    <div class="dialog-field">
+      <label>Titel</label>
+      <input
+        type="text"
+        class="dialog-input"
+        [(ngModel)]="title"
+        placeholder="z. B. Mentoring-Call KW 30"
+      />
+    </div>
+
+    <div class="dialog-field">
+      <label>Datum der Aufzeichnung</label>
+      <p-datepicker
+        [(ngModel)]="date"
+        dateFormat="dd.mm.yy"
+        [showIcon]="true"
+        placeholder="Datum wählen"
+        appendTo="body">
+      </p-datepicker>
+    </div>
+
+    <div class="dialog-field">
+      <label>Zoom-Link</label>
+      <input
+        type="url"
+        class="dialog-input"
+        [(ngModel)]="url"
+        placeholder="https://us02web.zoom.us/rec/share/…"
+      />
+    </div>
+
+    <div class="dialog-field">
+      <label>Passwort <span class="dialog-optional">(optional)</span></label>
+      <input
+        type="text"
+        class="dialog-input"
+        [(ngModel)]="passcode"
+        placeholder="Zugangscode der Aufzeichnung"
+      />
+    </div>
+
+    <div class="dialog-field">
+      <label>Beschreibung <span class="dialog-optional">(optional)</span></label>
+      <textarea
+        class="dialog-input dialog-textarea"
+        [(ngModel)]="description"
+        rows="2"
+        placeholder="Kurze Notiz zum Inhalt"
+      ></textarea>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button class="btn-cancel" (click)="close()">Abbrechen</button>
+    <button class="btn-save" (click)="onSave()" [disabled]="saving()">
+      <i class="pi" [class.pi-check]="!saving()" [class.pi-spin]="saving()" [class.pi-spinner]="saving()"></i>
+      {{ editMode() ? 'Speichern' : 'Erstellen' }}
+    </button>
+  </ng-template>
+</p-dialog>

@@ -1,0 +1,41 @@
+<div class="rec-card">
+  <div class="rec-card__accent"></div>
+
+  <div class="rec-card__main">
+    <span class="rec-card__title">{{ recording().title }}</span>
+    <span class="rec-card__date">
+      <i class="pi pi-calendar"></i>
+      {{ recording().recorded_on | formatDate }}
+    </span>
+    @if (recording().description) {
+      <span class="rec-card__desc">{{ recording().description }}</span>
+    }
+  </div>
+
+  <div class="rec-card__meta">
+    <a class="rec-card__link" [href]="recording().zoom_url" target="_blank" rel="noopener">
+      <i class="pi pi-external-link"></i>
+      Zoom-Link
+    </a>
+    @if (recording().passcode) {
+      <span class="rec-card__pass">
+        <i class="pi pi-lock"></i>
+        <code>{{ recording().passcode }}</code>
+      </span>
+    } @else {
+      <span class="rec-card__pass rec-card__pass--none">
+        <i class="pi pi-lock-open"></i>
+        kein Passwort
+      </span>
+    }
+  </div>
+
+  <div class="rec-card__actions">
+    <button class="action-btn action-btn--edit" (click)="edit.emit()" title="Bearbeiten">
+      <i class="pi pi-pencil"></i>
+    </button>
+    <button class="action-btn action-btn--delete" (click)="delete.emit($event)" title="Löschen">
+      <i class="pi pi-trash"></i>
+    </button>
+  </div>
+</div>

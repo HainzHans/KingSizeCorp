@@ -1,0 +1,35 @@
+<header class="toolbar">
+  <app-king-size-logo-component [isSmall]="true" />
+  <span class="toolbar-title">KingSize Corp</span>
+  <div class="toolbar-actions">
+    <button class="toolbar-icon-btn"><i class="pi pi-bell"></i></button>
+
+    <div class="toolbar-user">
+      <button type="button"
+              class="toolbar-avatar"
+              (click)="toggleUserMenu()"
+              [attr.aria-expanded]="isUserMenuOpen()"
+              aria-haspopup="menu"
+              title="Konto">
+        <i class="pi pi-user"></i>
+      </button>
+
+      @if (isUserMenuOpen()) {
+        <div class="user-menu" role="menu">
+          <div class="user-menu-header">
+            <span class="user-menu-name">{{ displayName() }}</span>
+            <span class="user-menu-role">{{ roleLabel() }}</span>
+          </div>
+          <button type="button" class="user-menu-item" role="menuitem" (click)="onSettings()">
+            <i class="pi pi-cog"></i>
+            <span>Einstellungen</span>
+          </button>
+          <button type="button" class="user-menu-item user-menu-item--danger" role="menuitem" (click)="onLogout()">
+            <i class="pi pi-sign-out"></i>
+            <span>Abmelden</span>
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</header>

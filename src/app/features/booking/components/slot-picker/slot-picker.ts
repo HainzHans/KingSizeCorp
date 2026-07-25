@@ -1,6 +1,7 @@
 import {Component, input, output} from '@angular/core';
 import {Appointment} from '../../../../shared/models/appointment.model';
 import {AppointmentSlotCardComponent} from '../appointment-slot-card-component/appointment-slot-card-component';
+import {todayIsoDate} from '../../../../shared/utils/date.util';
 
 @Component({
   selector: 'app-slot-picker',
@@ -19,7 +20,11 @@ export class SlotPicker {
   slotSelected = output<Appointment>();
 
   isSlotInFuture(date: string): boolean {
-    return new Date(date) > new Date();
+    // date ist 'YYYY-MM-DD'. Direkter String-Vergleich gegen das lokale
+    // heutige Datum – so bleiben Termine vom heutigen Tag den ganzen Tag
+    // buchbar (new Date('YYYY-MM-DD') würde als Mitternacht UTC parsen und
+    // heutige Termine abends fälschlich als Vergangenheit werten).
+    return date >= todayIsoDate();
   }
 
 }

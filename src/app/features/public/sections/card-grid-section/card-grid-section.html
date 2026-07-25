@@ -11,66 +11,9 @@
       </p>
     </div>
     <div class="card-grid-wrapper">
-      <div class="card">
-        <div class="inner-card">
-          <i class="pi pi-phone card-icon"></i>
-          <div class="card-text-wrapper">
-            <h6>Live-Calls</h6>
-            <span class="grey-text">jeden Sonntag wird live die Woche besprochen und analysiert</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="inner-card">
-          <i class="pi pi-whatsapp card-icon"></i>
-          <div class="card-text-wrapper">
-            <h6>Erreichbarkeit</h6>
-            <span class="grey-text">Ich bin 24/7 für Fragen persönlich erreichbar</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="inner-card">
-          <i class="pi pi-megaphone card-icon"></i>
-          <div class="card-text-wrapper">
-            <h6>Ehrliche Worte</h6>
-            <span class="grey-text">Ich sage dir ohne Umschweife, wenn du wieder Mist am Markt baust.</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="inner-card">
-          <i class="pi pi-heart card-icon"></i>
-          <div class="card-text-wrapper">
-            <h6>Fleiß und Disziplin</h6>
-            <span class="grey-text">Ich bringe dir das mit der nötigen Konsequenz bei, bis es sitzt.</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="inner-card">
-          <i class="pi pi-compass card-icon"></i>
-          <div class="card-text-wrapper">
-            <h6>Strategie‑Planung</h6>
-            <span class="grey-text">Gemeinsam entwickeln wir deinen klaren Fahrplan.</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="inner-card">
-          <i class="pi pi-comments card-icon"></i>
-          <div class="card-text-wrapper">
-            <h6>Trade‑Feedback</h6>
-            <span class="grey-text">Kurzes, ehrliches Feedback zu deinen Trades.</span>
-          </div>
-        </div>
-      </div>
-
+      @for (card of cards; track card.title) {
+        <app-feature-card [icon]="card.icon" [title]="card.title" [text]="card.text" />
+      }
     </div>
   </div>
 </section>

@@ -21,30 +21,16 @@
             <span class="grey-text">Es wird Zeit deine Ziele zu erreichen und ich helfe dir dabei</span>
           </div>
         </div>
-        <div style="flex: 1; display: flex; gap: 2rem; flex-direction: column;">
+        <div class="intro-column">
           <div class="intro-card">
             <h6>Das gebe ich auf den Weg:</h6>
             <div class="intro-list">
-              <div class="intro-list-item">
-                <i class="pi pi-chart-line"></i>
-                <span>NASDAQ Setup</span>
-              </div>
-              <div class="intro-list-item">
-                <i class="pi pi-shield"></i>
-                <span>Risk Management</span>
-              </div>
-              <div class="intro-list-item">
-                <i class="pi pi-file"></i>
-                <span>News richtig lesen</span>
-              </div>
-              <div class="intro-list-item">
-                <i class="pi pi-refresh"></i>
-                <span>Phasen des Wirtschaftszyklus</span>
-              </div>
-              <div class="intro-list-item">
-                <i class="pi pi-book"></i>
-                <span>Trading Workbook</span>
-              </div>
+              @for (item of deliverables; track item.label) {
+                <div class="intro-list-item">
+                  <i class="pi {{ item.icon }}"></i>
+                  <span>{{ item.label }}</span>
+                </div>
+              }
             </div>
           </div>
 
@@ -53,11 +39,11 @@
 
             <div class="spots-box">
               <div class="spots-count">
-                <span class="spots-number">{{ freeMentoringSlots }}</span>
+                <span class="spots-number">{{ freeMentoringSlots() }}</span>
                 <span class="spots-total">/ 10 Mentoring Plätze frei</span>
               </div>
               <div class="spots-count">
-                <span class="spots-number">{{ freeLiveTradingSlots }}</span>
+                <span class="spots-number">{{ freeLiveTradingSlots() }}</span>
                 <span class="spots-total">/ 10 Livetrading Plätze frei</span>
               </div>
 

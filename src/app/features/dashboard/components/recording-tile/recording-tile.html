@@ -1,0 +1,43 @@
+<button type="button" class="poster" (click)="open()" title="Aufzeichnung ansehen">
+  <i class="pi pi-video poster__watermark"></i>
+
+  @if (isNewest()) {
+    <span class="poster__badge">Neueste</span>
+  }
+
+  <span class="poster__play">
+    <i class="pi pi-play"></i>
+  </span>
+
+  <span class="poster__scrim">
+    <span class="poster__watch">
+      <i class="pi pi-external-link"></i>
+      Ansehen
+    </span>
+  </span>
+</button>
+
+<div class="tile__info">
+  <span class="tile__title" [title]="recording().title">{{ recording().title }}</span>
+  <span class="tile__date">
+    <i class="pi pi-calendar"></i>
+    {{ recording().recorded_on | formatDate }}
+  </span>
+  @if (recording().description) {
+    <p class="tile__desc">{{ recording().description }}</p>
+  }
+
+  @if (recording().passcode) {
+    <button
+      type="button"
+      class="passcode"
+      [class.is-copied]="copied()"
+      (click)="copyPasscode()"
+      title="Passwort kopieren"
+    >
+      <i class="pi" [class.pi-lock]="!copied()" [class.pi-check]="copied()"></i>
+      <code class="passcode__value">{{ recording().passcode }}</code>
+      <span class="passcode__hint">{{ copied() ? 'Kopiert' : 'Kopieren' }}</span>
+    </button>
+  }
+</div>

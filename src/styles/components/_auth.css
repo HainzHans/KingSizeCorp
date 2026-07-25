@@ -1,0 +1,204 @@
+/* ─────────────────────────────────────────────────────────────
+   Auth-Screens (Login, Passwort vergessen, Passwort setzen)
+   Gemeinsame Optik – am dunklen, grün akzentuierten App-Design
+   ausgerichtet. Global gehalten, damit alle drei Seiten aus einer
+   Quelle stylen und PrimeNG-Overrides ohne ::ng-deep auskommen.
+   Alle PrimeNG-Overrides sind unter .auth-card gescoped und wirken
+   dadurch nicht ins übrige UI (z. B. Dashboard).
+   ───────────────────────────────────────────────────────────── */
+
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  background:
+    radial-gradient(1100px 560px at 50% -12%, rgba(46, 204, 113, 0.12), transparent 60%),
+    radial-gradient(800px 500px at 90% 110%, rgba(46, 204, 113, 0.06), transparent 55%),
+    #080a0f;
+}
+
+.auth-card {
+  width: min(400px, 92vw);
+  padding: 2.5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015)),
+    #0f1117;
+  backdrop-filter: blur(14px);
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+
+/* ── Kopf: Logo + Titel ──────────────────────────────────── */
+.auth-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.auth-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 18px rgba(46, 204, 113, 0.25));
+}
+
+.auth-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--primary-white);
+}
+
+.auth-subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--primary-grey);
+}
+
+/* ── Felder ──────────────────────────────────────────────── */
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.auth-field label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--primary-grey);
+}
+
+/* PrimeNG InputText & Password auf das dunkle Theme trimmen. */
+.auth-card .p-inputtext {
+  width: 100%;
+  background: #0b0e14;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 10px;
+  padding: 0.75rem 0.9rem;
+  color: var(--primary-white);
+  font-size: 0.95rem;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.auth-card .p-inputtext::placeholder {
+  color: rgba(255, 255, 255, 0.32);
+}
+
+.auth-card .p-inputtext:enabled:hover {
+  border-color: rgba(255, 255, 255, 0.20);
+}
+
+.auth-card .p-inputtext:enabled:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.16);
+  outline: none;
+}
+
+/* p-password bringt einen eigenen Wrapper mit – volle Breite geben. */
+.auth-card .p-password {
+  width: 100%;
+  display: block;
+}
+
+.auth-card .p-password input {
+  width: 100%;
+}
+
+/* Toggle-Icon (Auge) im Passwortfeld einfärben. */
+.auth-card .p-password .p-icon,
+.auth-card .p-password .p-password-toggle-mask-icon {
+  color: var(--primary-grey);
+}
+
+/* ── Primär-Button: grüner Verlauf mit Glow (wie im übrigen UI) ─ */
+.auth-card .p-button {
+  width: 100%;
+  justify-content: center;
+  border: none;
+  border-radius: 10px;
+  padding: 0.8rem 1.2rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary-green), #5ddb92);
+  box-shadow: 0 6px 22px rgba(46, 204, 113, 0.35);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.auth-card .p-button:enabled:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 30px rgba(46, 204, 113, 0.5);
+}
+
+.auth-card .p-button:disabled {
+  opacity: 0.55;
+}
+
+/* ── Links ───────────────────────────────────────────────── */
+.auth-forgot {
+  align-self: flex-end;
+  margin-top: -0.4rem;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--primary-grey);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+
+.auth-forgot:hover {
+  color: var(--primary-green);
+}
+
+.auth-link {
+  background: transparent;
+  border: none;
+  color: var(--primary-grey);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+
+.auth-link:hover {
+  color: var(--primary-white);
+}
+
+/* ── Zustände ────────────────────────────────────────────── */
+.auth-error {
+  margin: 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #ff6b6b;
+}
+
+.auth-note {
+  margin: 0;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--primary-grey);
+}
+
+.auth-note strong {
+  color: var(--primary-white);
+}
+
+.auth-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+  margin: 0.25rem 0;
+}

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {supabase} from '../../../core/supabase.client';
 import {Appointment, CreateAppointmentDto, UpdateAppointmentDto} from '../../models/appointment.model';
+import {todayIsoDate} from '../../utils/date.util';
 
 
 @Injectable({ providedIn: 'root' })
@@ -83,17 +84,27 @@ export class AppointmentService {
   // Termin löschen (nur Admin)
   // -------------------------------------------------------
   async delete(id: string): Promise<void> {
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('appointments')
       .delete()
       .eq('status', 'available')
-      .eq('id', id);
+      .eq('id', id)
+      .select();
 
     if (error) throw error;
+
+    // Traf der Status-Filter keine Zeile (Termin wurde inzwischen gebucht),
+    // löscht Supabase nichts und meldet keinen Fehler – das darf die UI nicht
+    // als Erfolg werten.
+    if (!data || data.length === 0) {
+      throw new Error('Termin konnte nicht gelöscht werden – er wurde vermutlich zwischenzeitlich gebucht.');
+    }
   }
 
   async deleteExpired(): Promise<void> {
-    const today = new Date().toISOString().split('T')[0];
+    // Lokales heutiges Datum – konsistent mit der Anzeige-Logik. toISOString()
+    // würde nach UTC umrechnen und nachts einen anderen Tag als „heute" liefern.
+    const today = todayIsoDate();
 
     const { error } = await supabase
       .from('appointments')

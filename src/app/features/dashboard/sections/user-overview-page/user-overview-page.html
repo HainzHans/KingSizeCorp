@@ -1,2 +1,28 @@
 <h1>Übersicht</h1>
-<p>Hier entsteht dein Mitgliederbereich. Inhalte folgen in Kürze.</p>
+
+@if (loading()) {
+  <p class="muted">Deine Buchungen werden geladen …</p>
+} @else if (failed()) {
+  <p class="muted">Die Buchungen konnten nicht geladen werden. Bitte später erneut versuchen.</p>
+} @else if (bookings().length === 0) {
+  <p class="muted">Für dein Konto sind noch keine Buchungen hinterlegt.</p>
+} @else {
+  <h2>Meine Buchungen</h2>
+  <ul class="booking-list">
+    @for (booking of bookings(); track $index) {
+      <li class="booking-card">
+        <div class="booking-main">
+          <span class="booking-type">{{ booking.type }}</span>
+          <span class="booking-date">{{ booking.date }} · {{ booking.time }} Uhr</span>
+        </div>
+        <div class="booking-meta">
+          <span class="booking-price">{{ booking.price }} €</span>
+          <span
+            class="booking-status"
+            [class.is-done]="booking.status === 'Abgeschlossen'"
+          >{{ booking.status }}</span>
+        </div>
+      </li>
+    }
+  </ul>
+}

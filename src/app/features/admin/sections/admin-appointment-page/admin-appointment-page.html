@@ -72,7 +72,7 @@
             <span class="column-icon"><i class="pi pi-chart-line"></i></span>
             <div>
               <span class="column-label">LiveTrading</span>
-              <span class="column-count">{{ liveTradingAppointments().length }} Termine</span>
+              <span class="column-count">{{ upcomingLiveTrading().length }} Termine</span>
             </div>
           </div>
           <button class="btn-add btn-add--livetrading" (click)="openCreate('livetrading')">
@@ -82,13 +82,13 @@
         </div>
 
         <div class="appointments-list">
-          @if (liveTradingAppointments().length === 0 && !loading()) {
+          @if (upcomingLiveTrading().length === 0 && !loading()) {
             <div class="empty-state">
               <i class="pi pi-calendar-times"></i>
               <span>Noch keine Termine</span>
             </div>
           }
-          @for (appt of liveTradingAppointments(); track appt.id) {
+          @for (appt of upcomingLiveTrading(); track appt.id) {
             <div class="appt-card appt-card--livetrading">
               <div class="appt-card__accent"></div>
               <div class="appt-card__body">
@@ -121,7 +121,7 @@
             <span class="column-icon column-icon--mentoring"><i class="pi pi-users"></i></span>
             <div>
               <span class="column-label">Mentoring</span>
-              <span class="column-count">{{ mentoringAppointments().length }} Termine</span>
+              <span class="column-count">{{ upcomingMentoring().length }} Termine</span>
             </div>
           </div>
           <button class="btn-add btn-add--mentoring" (click)="openCreate('mentoring')">
@@ -131,37 +131,34 @@
         </div>
 
         <div class="appointments-list">
-          @if (mentoringAppointments().length === 0 && !loading()) {
+          @if (upcomingMentoring().length === 0 && !loading()) {
             <div class="empty-state">
               <i class="pi pi-calendar-times"></i>
               <span>Noch keine Termine</span>
             </div>
           }
-          @for (appt of mentoringAppointments(); track appt.id) {
-            @if (isAppointmentInFuture(appt)) {
-              <div class="appt-card appt-card--mentoring">
-                <div class="appt-card__accent"></div>
-                <div class="appt-card__body">
-                  <div class="appt-card__date">
-                    <i class="pi pi-calendar"></i>
-                    {{ appt.date | formatDate }}
-                  </div>
-                  <div class="appt-card__time">
-                    <i class="pi pi-clock"></i>
-                    {{ appt.time | slice:0:5 }} Uhr
-                  </div>
+          @for (appt of upcomingMentoring(); track appt.id) {
+            <div class="appt-card appt-card--mentoring">
+              <div class="appt-card__accent"></div>
+              <div class="appt-card__body">
+                <div class="appt-card__date">
+                  <i class="pi pi-calendar"></i>
+                  {{ appt.date | formatDate }}
                 </div>
-                <div class="appt-card__actions">
-                  <button class="action-btn action-btn--edit" (click)="openEdit(appt)" title="Bearbeiten">
-                    <i class="pi pi-pencil"></i>
-                  </button>
-                  <button class="action-btn action-btn--delete" (click)="confirmDelete(appt, $event)" title="Löschen">
-                    <i class="pi pi-trash"></i>
-                  </button>
+                <div class="appt-card__time">
+                  <i class="pi pi-clock"></i>
+                  {{ appt.time | slice:0:5 }} Uhr
                 </div>
               </div>
-            }
-
+              <div class="appt-card__actions">
+                <button class="action-btn action-btn--edit" (click)="openEdit(appt)" title="Bearbeiten">
+                  <i class="pi pi-pencil"></i>
+                </button>
+                <button class="action-btn action-btn--delete" (click)="confirmDelete(appt, $event)" title="Löschen">
+                  <i class="pi pi-trash"></i>
+                </button>
+              </div>
+            </div>
           }
         </div>
       </div>

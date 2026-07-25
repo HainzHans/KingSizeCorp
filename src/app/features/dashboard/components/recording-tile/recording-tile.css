@@ -1,0 +1,224 @@
+/* --accent / --accent-soft werden von der recordings-page geerbt. */
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* ── Poster (klickbar → öffnet Zoom) ───────────────────── */
+.poster {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  isolation: isolate;
+  background:
+    radial-gradient(115% 115% at 22% 12%,
+      hsl(var(--tile-hue, 158) 34% 22% / 0.55), transparent 60%),
+    linear-gradient(160deg, #161b22, #0c1016);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.poster:hover,
+.poster:focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(46, 204, 113, 0.38);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.48);
+  outline: none;
+}
+
+.poster__watermark {
+  position: absolute;
+  top: 12px;
+  left: 13px;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.32);
+}
+
+.poster__badge {
+  position: absolute;
+  top: 11px;
+  right: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #04140a;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+}
+
+/* Play-Button in der Mitte */
+.poster__play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(12, 16, 22, 0.42);
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(4px);
+  transition: transform 200ms ease, background 200ms ease, border-color 200ms ease;
+
+  i {
+    font-size: 20px;
+    color: #fff;
+    margin-left: 3px; /* optische Mitte des Play-Dreiecks */
+  }
+}
+
+.poster:hover .poster__play,
+.poster:focus-visible .poster__play {
+  transform: scale(1.12);
+  background: var(--accent);
+  border-color: transparent;
+
+  i { color: #04140a; }
+}
+
+/* unterer Verlauf + „Ansehen" auf Hover */
+.poster__scrim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 46%;
+  display: flex;
+  align-items: flex-end;
+  padding: 12px 14px;
+  background: linear-gradient(to top, rgba(4, 8, 12, 0.72), transparent);
+}
+
+.poster__watch {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 200ms ease, transform 200ms ease;
+
+  i { font-size: 12px; }
+}
+
+.poster:hover .poster__watch,
+.poster:focus-visible .poster__watch {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Text unter dem Poster ─────────────────────────────── */
+.tile__info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 2px;
+}
+
+.tile__title {
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--primary-white, #f1f5f9);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.tile__date {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--primary-grey, #94a3b8);
+
+  i { font-size: 11px; }
+}
+
+.tile__desc {
+  margin: 2px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--primary-grey, #7b8794);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* ── Passwort (klickbar zum Kopieren) ──────────────────── */
+.passcode {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 4px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--primary-grey, #94a3b8);
+  font-family: inherit;
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: border-color 150ms, color 150ms, background 150ms;
+
+  i { font-size: 11px; }
+
+  &:hover {
+    border-color: rgba(34, 197, 94, 0.32);
+    color: var(--primary-white, #f1f5f9);
+    background: rgba(34, 197, 94, 0.06);
+  }
+}
+
+.passcode.is-copied {
+  border-color: rgba(34, 197, 94, 0.32);
+  color: var(--accent);
+}
+
+.passcode__value {
+  font-family: 'DM Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--primary-white, #f1f5f9);
+}
+
+.passcode.is-copied .passcode__value {
+  color: var(--accent);
+}
+
+.passcode__hint {
+  font-size: 10.5px;
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── Schmale Ansicht ───────────────────────────────────── */
+@media (max-width: 520px) {
+  .poster__play {
+    width: 46px;
+    height: 46px;
+
+    i { font-size: 16px; }
+  }
+}

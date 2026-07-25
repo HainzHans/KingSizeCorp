@@ -1,0 +1,182 @@
+/* Variablen (--sidebar-bg, --accent, --transition …) werden von der
+   dashboard-page über die CSS-Cascade vererbt. display:contents lässt die
+   .sidebar der direkte Flex-Child des Body-Layouts bleiben. */
+:host {
+  display: contents;
+}
+
+/* ── Sidebar Shell ───────────────────────────────────────── */
+.sidebar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-width-collapsed);
+  height: 100%;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--sidebar-border);
+  overflow: hidden;
+  transition: width var(--transition);
+  flex-shrink: 0;
+}
+
+.sidebar.expanded {
+  width: var(--sidebar-width-expanded);
+}
+
+/* ── Sidebar Header ──────────────────────────────────────── */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  min-height: 56px;
+  border-bottom: 1px solid var(--sidebar-border);
+  overflow: hidden;
+}
+
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 200ms ease, color 200ms ease;
+
+  i { font-size: 16px; }
+}
+
+.toggle-btn:hover {
+  background: var(--item-hover-bg);
+  color: var(--text-primary);
+}
+
+.logo-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.sidebar.expanded .logo-text {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Admin Section ───────────────────────────────────────── */
+.nav-admin {
+  padding: 8px 8px 8px;
+  border-top: 1px solid var(--sidebar-border);
+}
+
+.nav-section-title {
+  display: block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 4px 10px 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity var(--transition);
+}
+
+/* Label ausblenden, wenn zugeklappt – Trennlinie bleibt sichtbar */
+.sidebar:not(.expanded) .nav-section-title {
+  opacity: 0;
+}
+
+/* ── Footer / User ───────────────────────────────────────── */
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 10px;
+  border-top: 1px solid var(--sidebar-border);
+  overflow: hidden;
+}
+
+.user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  flex-shrink: 0;
+
+  i { font-size: 16px; }
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity var(--transition), transform var(--transition);
+  white-space: nowrap;
+}
+
+.sidebar.expanded .user-info {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.user-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.user-role {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #e05252;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-left: auto;
+  opacity: 0;
+  pointer-events: none;
+  transition: background 200ms ease, color 200ms ease, opacity var(--transition);
+
+  i { font-size: 15px; }
+}
+
+.sidebar.expanded .logout-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.logout-btn:hover {
+  background: var(--item-hover-bg);
+}

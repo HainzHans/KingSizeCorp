@@ -1,0 +1,70 @@
+<div class="videothek">
+
+  <div class="page-header">
+    <div class="page-header__text">
+      <span class="page-eyebrow">Mentoring</span>
+      <h1 class="page-title">Videothek</h1>
+      <p class="page-subtitle">Alle Zoom-Aufzeichnungen deiner Mentoring-Calls an einem Ort.</p>
+    </div>
+    @if (!loading() && !failed() && recordings().length > 0) {
+      <span class="count-pill">
+        <i class="pi pi-video"></i>
+        {{ recordings().length }} {{ recordings().length === 1 ? 'Aufzeichnung' : 'Aufzeichnungen' }}
+      </span>
+    }
+  </div>
+
+  @if (loading()) {
+    <div class="state">
+      <i class="pi pi-spin pi-spinner"></i>
+      <span>Aufzeichnungen werden geladen …</span>
+    </div>
+  } @else if (failed()) {
+    <div class="state">
+      <i class="pi pi-exclamation-triangle"></i>
+      <span>Die Aufzeichnungen konnten nicht geladen werden. Bitte später erneut versuchen.</span>
+    </div>
+  } @else if (recordings().length === 0) {
+    <div class="state">
+      <i class="pi pi-video"></i>
+      <span>Es sind noch keine Aufzeichnungen hinterlegt.</span>
+    </div>
+  } @else {
+
+    <label class="search">
+      <i class="pi pi-search search__icon"></i>
+      <input
+        class="search__input"
+        type="search"
+        placeholder="Aufzeichnung suchen …"
+        [value]="query()"
+        (input)="query.set($any($event.target).value)"
+      />
+      @if (query()) {
+        <button
+          type="button"
+          class="search__clear"
+          (click)="query.set('')"
+          title="Suche zurücksetzen"
+        >
+          <i class="pi pi-times"></i>
+        </button>
+      }
+    </label>
+
+    @if (filtered().length === 0) {
+      <div class="state">
+        <i class="pi pi-search"></i>
+        <span>Keine Aufzeichnung passt zu „{{ query() }}“.</span>
+      </div>
+    } @else {
+      <div class="shelf">
+        @for (rec of filtered(); track rec.id; let first = $first) {
+          <app-recording-tile [recording]="rec" [isNewest]="!query() && first" />
+        }
+      </div>
+    }
+
+  }
+
+</div>

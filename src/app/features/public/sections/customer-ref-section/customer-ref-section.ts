@@ -1,15 +1,16 @@
-import {AfterViewInit, Component, ElementRef, HostListener} from '@angular/core';
-import {NgClass} from '@angular/common';
+import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy} from '@angular/core';
+import {CustomerRef} from '../../../../shared/models/customer-ref.model';
+import {CustomerRefCardComponent} from '../../components/customer-ref-card/customer-ref-card';
 
 @Component({
   selector: 'app-customer-ref-section',
   imports: [
-    NgClass
+    CustomerRefCardComponent
   ],
   templateUrl: './customer-ref-section.html',
   styleUrl: './customer-ref-section.css',
 })
-export class CustomerRefSection implements AfterViewInit {
+export class CustomerRefSection implements AfterViewInit, OnDestroy {
 
   topRow!: HTMLElement;
   bottomRow!: HTMLElement;
@@ -17,6 +18,8 @@ export class CustomerRefSection implements AfterViewInit {
 
   maxTopShift = 0;
   maxBottomShift = 0;
+
+  private keyframeStyleEl?: HTMLStyleElement;
 
   constructor(private el: ElementRef) {}
 
@@ -67,26 +70,28 @@ export class CustomerRefSection implements AfterViewInit {
   }
 
   applyAutoScrollDistances() {
-    const styleSheet = document.styleSheets[0];
+    // Eigenes <style>-Element statt document.styleSheets[0]: welches [0] ist,
+    // hängt von der Build-Reihenfolge ab, ein CDN-Stylesheet würde bei cssRules
+    // eine SecurityError werfen, und die Regeln würden sich sonst bei jeder
+    // Instanziierung ansammeln. Beim Destroy wird es wieder entfernt.
+    const styleEl = document.createElement('style');
+    styleEl.textContent = `
+      @keyframes autoScrollRight {
+        from { transform: translateX(0); }
+        to   { transform: translateX(${this.maxTopShift}px); }
+      }
+      @keyframes autoScrollLeft {
+        from { transform: translateX(0); }
+        to   { transform: translateX(-${this.maxBottomShift}px); }
+      }
+    `;
 
-    // TOP → nach rechts
-    const topRule = `
-    @keyframes autoScrollRight {
-      from { transform: translateX(0); }
-      to   { transform: translateX(${this.maxTopShift}px); }
-    }
-  `;
+    document.head.appendChild(styleEl);
+    this.keyframeStyleEl = styleEl;
+  }
 
-    // BOTTOM → nach links
-    const bottomRule = `
-    @keyframes autoScrollLeft {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-${this.maxBottomShift}px); }
-    }
-  `;
-
-    styleSheet.insertRule(topRule, styleSheet.cssRules.length);
-    styleSheet.insertRule(bottomRule, styleSheet.cssRules.length);
+  ngOnDestroy() {
+    this.keyframeStyleEl?.remove();
   }
 
 
@@ -165,9 +170,4 @@ export class CustomerRefSection implements AfterViewInit {
     }
   ]
 
-}
-
-export interface CustomerRef {
-  name: string;
-  review: number
 }

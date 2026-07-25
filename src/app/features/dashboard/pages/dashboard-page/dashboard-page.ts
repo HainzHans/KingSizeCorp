@@ -1,29 +1,28 @@
-import { Component, ElementRef, HostListener, computed, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, computed, inject, signal } from '@angular/core';
 import { AuthService } from '../../../../shared/services/auth-service/auth-service';
-import { KingSizeLogoComponent } from '../../../../shared/components/king-size-logo-component/king-size-logo-component';
+import { DashboardToolbarComponent } from '../../components/dashboard-toolbar/dashboard-toolbar';
+import { DashboardSidebarComponent } from '../../components/dashboard-sidebar/dashboard-sidebar';
+import { NavItem } from '../../models/nav-item.model';
 import { AdminOverviewPage } from '../../../admin/sections/admin-overview-page/admin-overview-page';
 import { AdminAppointmentPage } from '../../../admin/sections/admin-appointment-page/admin-appointment-page';
 import { AdminCommunityPage } from '../../../admin/sections/admin-community-page/admin-community-page';
+import { AdminRecordingsPage } from '../../../admin/sections/admin-recordings-page/admin-recordings-page';
 import { UserOverviewPage } from '../../sections/user-overview-page/user-overview-page';
+import { RecordingsPage } from '../../sections/recordings-page/recordings-page';
 import { SettingsPage } from '../../sections/settings-page/settings-page';
-
-export interface NavItem {
-  icon:  string;
-  label: string;
-  key:   string;
-}
 
 @Component({
   selector: 'app-dashboard-page',
   standalone: true,
   imports: [
-    CommonModule,
-    KingSizeLogoComponent,
+    DashboardToolbarComponent,
+    DashboardSidebarComponent,
     AdminOverviewPage,
     AdminAppointmentPage,
     AdminCommunityPage,
+    AdminRecordingsPage,
     UserOverviewPage,
+    RecordingsPage,
     SettingsPage,
   ],
   templateUrl: './dashboard-page.html',
@@ -31,12 +30,8 @@ export interface NavItem {
 })
 export class DashboardPage {
   private authService = inject(AuthService);
-  private hostRef = inject(ElementRef<HTMLElement>);
 
-  isExpanded = signal(true);
-
-  /** Steuert das Dropdown hinter dem User-Icon in der Toolbar. */
-  isUserMenuOpen = signal(false);
+  readonly isExpanded = signal(true);
 
   readonly isAdmin     = this.authService.isAdmin;
   readonly displayName = this.authService.displayName;
@@ -44,17 +39,19 @@ export class DashboardPage {
 
   /** Für jede Rolle sichtbar. */
   readonly navItems: readonly NavItem[] = [
-    { icon: 'pi-home', label: 'Übersicht', key: 'user-overview' },
+    { icon: 'pi-home',  label: 'Übersicht',      key: 'user-overview' },
+    { icon: 'pi-video', label: 'Aufzeichnungen', key: 'recordings'    },
   ];
 
   /** Nur für Admins sichtbar. */
   readonly adminItems: readonly NavItem[] = [
-    { icon: 'pi-users',    label: 'Übersicht', key: 'admin-overview'     },
-    { icon: 'pi-star',     label: 'Community', key: 'admin-community'    },
-    { icon: 'pi-calendar', label: 'Termine',   key: 'admin-appointments' },
+    { icon: 'pi-users',    label: 'Übersicht',      key: 'admin-overview'     },
+    { icon: 'pi-star',     label: 'Community',      key: 'admin-community'    },
+    { icon: 'pi-calendar', label: 'Termine',        key: 'admin-appointments' },
+    { icon: 'pi-video',    label: 'Aufzeichnungen', key: 'admin-recordings'   },
   ];
 
-  activeKey = signal<string>(this.authService.isAdmin() ? 'admin-overview' : 'user-overview');
+  readonly activeKey = signal<string>(this.authService.isAdmin() ? 'admin-overview' : 'user-overview');
 
   toggle(): void {
     this.isExpanded.update(v => !v);
@@ -64,34 +61,11 @@ export class DashboardPage {
     this.activeKey.set(item.key);
   }
 
-  toggleUserMenu(): void {
-    this.isUserMenuOpen.update(v => !v);
-  }
-
   openSettings(): void {
-    this.isUserMenuOpen.set(false);
     this.activeKey.set('settings');
   }
 
   logout(): void {
-    this.isUserMenuOpen.set(false);
     this.authService.logout();
-  }
-
-  /** Klick außerhalb der Toolbar schließt das Menü wieder. */
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    if (!this.isUserMenuOpen()) return;
-
-    const target = event.target as Node | null;
-    const menuRoot = (this.hostRef.nativeElement as HTMLElement).querySelector('.toolbar-user');
-    if (target && menuRoot?.contains(target)) return;
-
-    this.isUserMenuOpen.set(false);
-  }
-
-  @HostListener('document:keydown.escape')
-  onEscape(): void {
-    this.isUserMenuOpen.set(false);
   }
 }

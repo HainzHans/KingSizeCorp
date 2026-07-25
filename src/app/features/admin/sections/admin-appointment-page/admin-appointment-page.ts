@@ -1,4 +1,4 @@
-import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
+import { Component, OnInit, WritableSignal, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -19,7 +19,7 @@ import {
   BookedAppointmentService
 } from '../../../../shared/services/booked-appointment-service/booked-appointment.service';
 import {BookedAppointment} from '../../../../shared/models/booked-appointment.model';
-import {toGermanDate, toIsoDate, toIsoTime} from '../../../../shared/utils/date.util';
+import {toGermanDate, toIsoDate, toIsoTime, todayIsoDate} from '../../../../shared/utils/date.util';
 
 @Component({
   selector: 'app-termine-page',
@@ -61,6 +61,13 @@ export class AdminAppointmentPage implements OnInit {
   readonly mentoringAppointments   = signal<Appointment[]>([]);
   readonly bookedAppointments      = signal<BookedAppointment[]>([]);
 
+  // Nur bevorstehende Termine – der Filter hängt so an beiden Spalten und die
+  // Kopfzeilen-Zählung nutzt dieselbe Liste, Anzeige und Zahl bleiben synchron.
+  readonly upcomingLiveTrading = computed(() =>
+    this.liveTradingAppointments().filter(a => this.isAppointmentInFuture(a)));
+  readonly upcomingMentoring   = computed(() =>
+    this.mentoringAppointments().filter(a => this.isAppointmentInFuture(a)));
+
   private messageService           = inject(MessageService);
   private confirmationService      = inject(ConfirmationService);
   private appointmentService       = inject(AppointmentService);
@@ -82,9 +89,10 @@ export class AdminAppointmentPage implements OnInit {
   private async loadAppointments() {
     this.loading.set(true);
     try {
-      // Das Aufräumen abgelaufener Termine läuft parallel zum Laden mit.
-      const [, mentoring, livetrading] = await Promise.all([
-        this.appointmentService.deleteExpired(),
+      // Erst abgelaufene Termine aufräumen, dann laden – sonst hängt es vom
+      // Zufall ab, ob die frisch geladene Liste die gelöschten noch enthält.
+      await this.appointmentService.deleteExpired();
+      const [mentoring, livetrading] = await Promise.all([
         this.appointmentService.getAvailableByType('mentoring'),
         this.appointmentService.getAvailableByType('livetrading'),
       ]);
@@ -248,7 +256,9 @@ export class AdminAppointmentPage implements OnInit {
       : `${this.typeLabel(this.dialogType)}-Termin erstellen`;
   }
 
-  isAppointmentInFuture(appointment: Appointment) {
-    return new Date(appointment.date) > new Date();
+  isAppointmentInFuture(appointment: Appointment): boolean {
+    // String-Vergleich der 'YYYY-MM-DD'-Werte gegen das lokale heutige Datum;
+    // heutige Termine bleiben damit den ganzen Tag über sichtbar.
+    return appointment.date >= todayIsoDate();
   }
 }

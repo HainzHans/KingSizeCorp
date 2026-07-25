@@ -16,6 +16,18 @@ export const routes: Routes = [
   { path: 'login', component: LoginPage },
   { path: 'admin-login', redirectTo: 'login', pathMatch: 'full' },
   {
+    path: 'passwort-vergessen',
+    loadComponent: () => import('./features/auth/pages/forgot-password-page/forgot-password-page')
+      .then(m => m.ForgotPasswordPage),
+  },
+  {
+    // Ziel des Recovery-Links aus der Mail. Muss in den Supabase-Auth-
+    // Einstellungen (Redirect URLs) freigegeben sein.
+    path: 'passwort-setzen',
+    loadComponent: () => import('./features/auth/pages/set-password-page/set-password-page')
+      .then(m => m.SetPasswordPage),
+  },
+  {
     // Ein Bereich für alle eingeloggten Mitglieder. Ob der Admin-Block
     // erscheint, entscheidet die Sidebar anhand der Rolle – abgesichert
     // wird das serverseitig über die RLS-Policies (public.is_admin()).

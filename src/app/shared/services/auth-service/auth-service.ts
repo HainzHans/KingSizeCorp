@@ -48,6 +48,29 @@ export class AuthService {
     return null;
   }
 
+  /**
+   * Stößt „Passwort vergessen" an. Läuft über die Edge Function
+   * request-password-reset (Recovery-Link + Resend), nicht über Supabase-SMTP.
+   * Gibt bewusst keine Auskunft, ob die Adresse existiert.
+   */
+  async requestPasswordReset(email: string): Promise<void> {
+    await supabase.functions.invoke('request-password-reset', {
+      body: { email },
+    });
+  }
+
+  /**
+   * Setzt das Passwort des aktuell (per Recovery-Link) angemeldeten Users.
+   * Gibt bei Erfolg null zurück, sonst die anzuzeigende Fehlermeldung.
+   */
+  async updatePassword(newPassword: string): Promise<string | null> {
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) {
+      return 'Passwort konnte nicht gesetzt werden. Ist der Link noch gültig?';
+    }
+    return null;
+  }
+
   async logout(): Promise<void> {
     const { error } = await supabase.auth.signOut();
     if (error) {

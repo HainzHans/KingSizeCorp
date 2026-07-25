@@ -1,0 +1,47 @@
+<nav class="sidebar" [class.expanded]="expanded()">
+
+  <!-- Sidebar Header -->
+  <div class="sidebar-header">
+    <button class="toggle-btn" (click)="toggle.emit()" [title]="expanded() ? 'Zuklappen' : 'Aufklappen'">
+      <i class="pi" [class.pi-align-left]="expanded()" [class.pi-align-right]="!expanded()"></i>
+    </button>
+    <span class="logo-text">Navigation</span>
+  </div>
+
+  <!-- Navigation Items -->
+  <app-sidebar-nav-list
+    [items]="navItems()"
+    [activeKey]="activeKey()"
+    [expanded]="expanded()"
+    (select)="navigate.emit($event)"
+  />
+
+  <!-- Admin Section – nur für Admins -->
+  @if (isAdmin()) {
+    <div class="nav-admin">
+      <span class="nav-section-title">Admin</span>
+      <app-sidebar-nav-list
+        variant="admin"
+        [items]="adminItems()"
+        [activeKey]="activeKey()"
+        [expanded]="expanded()"
+        (select)="navigate.emit($event)"
+      />
+    </div>
+  }
+
+  <!-- Footer -->
+  <div class="sidebar-footer">
+    <div class="user-avatar">
+      <i class="pi pi-user"></i>
+    </div>
+    <div class="user-info">
+      <span class="user-name">{{ displayName() }}</span>
+      <span class="user-role">{{ roleLabel() }}</span>
+    </div>
+    <button class="logout-btn" (click)="logout.emit()" title="Abmelden">
+      <i class="pi pi-sign-out"></i>
+    </button>
+  </div>
+
+</nav>

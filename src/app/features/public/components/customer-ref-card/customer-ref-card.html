@@ -1,0 +1,15 @@
+<i class="pi pi-user avatar"></i>
+
+<div class="body">
+  <span>{{ name() }}</span>
+
+  <div class="stars">
+    @for (i of stars; track i) {
+      <i class="pi"
+         [class.pi-star-fill]="i <= review()"
+         [class.active-star]="i <= review()"
+         [class.pi-star]="i > review()"
+      ></i>
+    }
+  </div>
+</div>

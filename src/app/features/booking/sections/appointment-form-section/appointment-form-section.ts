@@ -168,7 +168,10 @@ export class AppointmentFormSection implements OnInit {
 
     } catch (err: any) {
       this.submitting.set(false);
-      if (err?.status === 409) {
+      // supabase.functions.invoke() wirft einen FunctionsHttpError, der den
+      // Status nicht direkt trägt, sondern im Response-Objekt unter `context`.
+      const status = err?.status ?? err?.context?.status;
+      if (status === 409) {
         alert('Dieser Termin wurde leider gerade von jemand anderem gebucht. Bitte wähle einen anderen Termin.');
         this.currentStep.set(3);
         this.selectedSlot.set(undefined);

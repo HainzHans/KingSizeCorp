@@ -1,0 +1,91 @@
+:host {
+  --rec-color:  var(--primary-green, #22c55e);
+  --rec-border: rgba(34, 197, 94, 0.22);
+}
+
+.dialog-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 4px;
+}
+
+.dialog-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+
+  label {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--primary-grey, #64748b);
+  }
+}
+
+.dialog-optional {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  color: var(--primary-grey, #475569);
+}
+
+.dialog-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--primary-white, #f1f5f9);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px;
+  transition: border-color 150ms;
+
+  &::placeholder { color: var(--primary-grey, #475569); }
+
+  &:focus {
+    outline: none;
+    border-color: var(--rec-border);
+  }
+}
+
+.dialog-textarea {
+  resize: vertical;
+  min-height: 56px;
+  line-height: 1.5;
+}
+
+.btn-cancel {
+  padding: 9px 18px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  color: var(--primary-grey, #64748b);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 150ms;
+
+  &:hover { background: rgba(255, 255, 255, 0.05); }
+}
+
+.btn-save {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  border: none;
+  background: var(--rec-color);
+  color: #071a0f;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 150ms;
+
+  &:hover { opacity: 0.85; }
+  &:disabled { opacity: 0.6; cursor: default; }
+}

@@ -1,5 +1,5 @@
 import {Component, input} from '@angular/core';
-import {Router, NavigationEnd} from '@angular/router';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-king-size-button',
@@ -24,14 +24,11 @@ export class KingSizeButton {
       return;
     }
 
-    // Navigation + danach nach oben scrollen
+    // Navigation + danach nach oben scrollen. Das Promise löst erst auf,
+    // wenn die Navigation abgeschlossen ist – kein events-Abo nötig (das
+    // würde bei jedem Klick einen weiteren, nie gekündigten Subscriber anlegen).
     this.router.navigate([this.target()]).then(() => {
-      // Warten bis Navigation abgeschlossen ist
-      this.router.events.subscribe(event => {
-        if (event instanceof NavigationEnd) {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 
