@@ -54,6 +54,10 @@ export class AppointmentFormSection implements OnInit {
   // Ob Community gewählt wurde (überspringt Schritt 3 – Terminwahl)
   isCommunity     = signal<boolean>(false);
 
+  // Ob der Kunde "ohne Termin" buchen möchte (Termin wird nachträglich
+  // mit dem Mentor per WhatsApp/E-Mail vereinbart)
+  noAppointment   = signal<boolean>(false);
+
   steps = ['Produkt', 'Kontakt', 'Termin', 'Übersicht'];
 
   contactForm!: FormGroup;
@@ -108,6 +112,7 @@ export class AppointmentFormSection implements OnInit {
     if (this.selectedProduct() !== product) {
       this.selectedSlot.set(undefined);
       this.availableSlots.set([]);
+      this.noAppointment.set(false);
     }
     this.selectedProduct.set(product);
     this.isCommunity.set(product === 'community');
@@ -115,6 +120,15 @@ export class AppointmentFormSection implements OnInit {
 
   selectSlot(slot: Appointment): void {
     this.selectedSlot.set(slot);
+    // Ein konkret gewählter Termin schließt "ohne Termin" aus.
+    this.noAppointment.set(false);
+  }
+
+  // "Ohne Termin buchen" – gewählter Slot wird verworfen, der Termin wird
+  // nach der Buchung individuell mit dem Mentor vereinbart.
+  chooseNoAppointment(): void {
+    this.selectedSlot.set(undefined);
+    this.noAppointment.set(true);
   }
 
   /* ── Load slots ─────────────────────────────────────────── */
@@ -141,8 +155,9 @@ export class AppointmentFormSection implements OnInit {
   async submitBooking(): Promise<void> {
     if (this.contactForm.invalid || !this.selectedProduct()) return;
 
-    // Community braucht keinen Slot
-    if (!this.isCommunity() && !this.selectedSlot()) return;
+    // Community braucht keinen Slot. Sonst wird entweder ein konkreter Termin
+    // ODER "ohne Termin" benötigt.
+    if (!this.isCommunity() && !this.selectedSlot() && !this.noAppointment()) return;
 
     this.submitting.set(true);
 
@@ -151,6 +166,14 @@ export class AppointmentFormSection implements OnInit {
 
       if (this.isCommunity()) {
         url = await this.checkoutService.createCommunityCheckout({
+          customer_name:  this.contactForm.value.fullName,
+          customer_email: this.contactForm.value.email,
+          customer_phone: this.contactForm.value.phone,
+        });
+      } else if (this.noAppointment()) {
+        // Buchung ohne Termin: Produkttyp statt appointment_id senden.
+        url = await this.checkoutService.createCheckout({
+          type:           this.selectedProduct()!,
           customer_name:  this.contactForm.value.fullName,
           customer_email: this.contactForm.value.email,
           customer_phone: this.contactForm.value.phone,

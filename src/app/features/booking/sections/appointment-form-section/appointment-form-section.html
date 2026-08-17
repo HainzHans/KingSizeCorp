@@ -142,6 +142,37 @@
           (slotSelected)="selectSlot($event)"
         ></app-slot-picker>
 
+        <!-- Ohne Termin buchen -->
+        @if (!loadingSlots()) {
+          <div class="no-appt">
+            <div class="no-appt__divider"><span>oder</span></div>
+
+            <button
+              type="button"
+              class="no-appt__option"
+              [class.no-appt__option--active]="noAppointment()"
+              (click)="chooseNoAppointment()"
+            >
+              <div class="no-appt__icon"><i class="pi pi-calendar-plus"></i></div>
+              <div class="no-appt__text">
+                <span class="no-appt__title">Kein passender Termin dabei?</span>
+                <span class="no-appt__desc">
+                  Ohne Termin buchen – deinen Termin vereinbaren wir direkt danach.
+                </span>
+              </div>
+              <div class="no-appt__check"><i class="pi pi-check"></i></div>
+            </button>
+
+            @if (noAppointment()) {
+              <p class="no-appt__hint">
+                <i class="pi pi-info-circle"></i>
+                Nach der Buchung melde ich mich bei dir, um
+                einen Termin zu vereinbaren.
+              </p>
+            }
+          </div>
+        }
+
         <div class="booking-card__actions">
           <app-glow-button
             label="Zurück"
@@ -153,7 +184,7 @@
             label="Zur Übersicht"
             icon="pi-arrow-right"
             iconPos="right"
-            [disabled]="!selectedSlot()"
+            [disabled]="!selectedSlot() && !noAppointment()"
             (onClick)="nextStep()"
           ></app-glow-button>
         </div>
@@ -178,6 +209,14 @@
             <p class="community-hint">
               <i class="pi pi-info-circle"></i>
               Nach erfolgreicher Zahlung erhältst du per E-Mail den Telegram-Einladungslink. Das Abo ist monatlich kündbar.
+            </p>
+          }
+          @if (!isCommunity() && noAppointment()) {
+            <p class="community-hint">
+              <i class="pi pi-info-circle"></i>
+              Du buchst ohne festen Termin. Nach erfolgreicher Zahlung melde ich mich
+              bei dir, um deinen Termin persönlich zu vereinbaren.
+              Bitte habe etwas Geduld.
             </p>
           }
         <div class="booking-card__actions">

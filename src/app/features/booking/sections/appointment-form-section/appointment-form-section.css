@@ -105,6 +105,130 @@
    STEP 3 – TIME SLOTS
    ============================================ */
 
+/* ── Ohne Termin buchen ── */
+.no-appt {
+  margin-top: 1.25rem;
+}
+
+.no-appt__divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.5rem 0 1rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.no-appt__divider::before,
+.no-appt__divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.no-appt__option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  text-align: left;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.no-appt__option:hover {
+  border-color: rgba(79, 220, 160, 0.35);
+  transform: translateY(-1px);
+}
+
+.no-appt__option--active {
+  border-color: var(--primary-green) !important;
+  background: rgba(79, 220, 160, 0.08);
+  box-shadow: 0 0 0 1px rgba(79, 220, 160, 0.25);
+}
+
+.no-appt__icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--primary-green);
+  background: rgba(79, 220, 160, 0.1);
+  border: 1px solid rgba(79, 220, 160, 0.2);
+}
+
+.no-appt__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.no-appt__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.no-appt__desc {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.4;
+}
+
+.no-appt__check {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: #fff;
+  background: var(--primary-green);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.no-appt__option--active .no-appt__check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.no-appt__hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(79, 220, 160, 0.06);
+  border: 1px solid rgba(79, 220, 160, 0.15);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  margin: 0.9rem 0 0;
+  line-height: 1.5;
+}
+
+.no-appt__hint .pi-info-circle {
+  color: var(--primary-green);
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
 
 
 /* ============================================

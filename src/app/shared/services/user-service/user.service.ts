@@ -15,6 +15,8 @@ export class UserService {
     customer_email,
     customer_phone,
     status,
+    type,
+    price,
     appointments (
       type,
       date,
@@ -33,12 +35,16 @@ export class UserService {
       const email = booking.customer_email;
       const appt  = booking.appointments as any;
 
+      // Typ und Preis kommen aus dem Termin ODER (Buchung ohne Termin)
+      // direkt von der Buchung.
+      const bookingType = appt?.type ?? (booking as any).type;
+
       const purchase: UserPurchase = {
-        type:   appt?.type === 'livetrading' ? 'Live Trading' : 'Mentoring',
+        type:   bookingType === 'livetrading' ? 'Live Trading' : 'Mentoring',
         date:   this.formatDate(appt?.date ?? ''),
         time:   (appt?.time ?? '').slice(0, 5),
         status: booking.status === 'paid' ? 'Abgeschlossen' : 'Ausstehend',
-        price:  appt?.price ?? 0,
+        price:  appt?.price ?? (booking as any).price ?? 0,
       };
 
       if (map.has(email)) {
