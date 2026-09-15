@@ -11,7 +11,7 @@ import {FormatDatePipe} from '../../../../shared/pipes/formatDatePipe';
   styleUrls: ['./booking-summary-component.css'],
 })
 export class BookingSummaryComponent {
-  product  = input.required<'livetrading' | 'mentoring' | 'community' | null>();
+  product  = input.required<'mentoring' | 'community' | null>();
   fullName = input.required<string>();
   phone    = input.required<string>();
   email    = input.required<string>();
@@ -19,7 +19,6 @@ export class BookingSummaryComponent {
 
   productLabel = computed(() => {
     switch (this.product()) {
-      case 'livetrading': return 'Live Trading';
       case 'mentoring':   return 'Mentoring';
       case 'community':   return 'KingSize Community';
       default:            return '';
@@ -28,7 +27,6 @@ export class BookingSummaryComponent {
 
   priceLabel = computed(() => {
     switch (this.product()) {
-      case 'livetrading': return '€ 150 / Session';
       case 'mentoring':   return '€ 1600 / LifeTime';
       case 'community':   return '€ 50 / Monat';
       default:            return '';

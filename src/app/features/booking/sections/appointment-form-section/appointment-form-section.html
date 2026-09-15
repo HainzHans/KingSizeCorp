@@ -15,19 +15,8 @@
           <h2 class="booking-card__title">Was möchtest du buchen?</h2>
         </div>
 
-        <!-- Obere Reihe: Live Trading + Mentoring -->
+        <!-- Obere Reihe: Mentoring -->
         <div class="product-grid">
-          <app-product-card
-            name="Live Trading"
-            description="Erlebe Trading in Echtzeit. Lerne Märkte zu lesen, Setups zu erkennen und Entscheidungen sicher zu treffen."
-            price="€ 150"
-            priceUnit="/ Session"
-            icon="pi-chart-line"
-            [features]="['Live Marktanalyse', 'Q&A in Echtzeit', 'Aufzeichnung inklusive']"
-            [selected]="selectedProduct() === 'livetrading'"
-            [showInfo]="true"
-          ></app-product-card>
-
           <app-product-card
             name="Mentoring"
             description="Begleitung auf deinem Weg zum profitablen Trader. Individuell, intensiv und auf dich zugeschnitten."
@@ -120,7 +109,7 @@
       </div>
     }
 
-    <!-- Step 3: Termin wählen (nur für Mentoring / Live Trading) -->
+    <!-- Step 3: Termin wählen (nur für Mentoring) -->
     @if (currentStep() === 3 && !isCommunity()) {
       <div class="booking-card">
         <div class="booking-card__header">

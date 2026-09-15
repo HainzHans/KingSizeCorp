@@ -1,8 +1,5 @@
 /* ── Colors ──────────────────────────────────────────────── */
 :host {
-  --lt-color:      #38bdf8;
-  --lt-soft:       rgba(56, 189, 248, 0.10);
-  --lt-border:     rgba(56, 189, 248, 0.22);
   --mt-color:      var(--primary-green, #22c55e);
   --mt-soft:       rgba(34, 197, 94, 0.10);
   --mt-border:     rgba(34, 197, 94, 0.22);
@@ -82,10 +79,10 @@
   border-bottom-color: var(--secondary-black, #1a1d27);
 }
 
-/* ── Two-column layout ───────────────────────────────────── */
+/* ── Layout ──────────────────────────────────────────────── */
 .columns {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 20px;
   align-items: start;
 }
@@ -123,8 +120,8 @@
   width: 38px;
   height: 38px;
   border-radius: 10px;
-  background: var(--lt-soft);
-  color: var(--lt-color);
+  background: var(--mt-soft);
+  color: var(--mt-color);
   flex-shrink: 0;
 
   i { font-size: 17px; }
@@ -168,12 +165,6 @@
 
   &:hover { opacity: 0.85; transform: translateY(-1px); }
   &:active { transform: translateY(0); }
-}
-
-.btn-add--livetrading {
-  background: var(--lt-soft);
-  color: var(--lt-color);
-  border: 1px solid var(--lt-border);
 }
 
 .btn-add--mentoring {
@@ -232,7 +223,6 @@
   border-radius: 3px 0 0 3px;
 }
 
-.appt-card--livetrading .appt-card__accent { background: var(--lt-color); }
 .appt-card--mentoring   .appt-card__accent { background: var(--mt-color); }
 
 .appt-card__body {
@@ -325,10 +315,6 @@
   left: 0; top: 0; bottom: 0;
   width: 3px;
   border-radius: 3px 0 0 3px;
-  background: var(--lt-color);
-}
-
-.booked-card--mentoring .booked-card__accent {
   background: var(--mt-color);
 }
 
@@ -338,13 +324,9 @@
   gap: 7px;
   font-size: 13px;
   font-weight: 700;
-  color: var(--lt-color);
+  color: var(--mt-color);
 
   i { font-size: 14px; }
-}
-
-.booked-card--mentoring .booked-card__type {
-  color: var(--mt-color);
 }
 
 .booked-card__datetime {
@@ -437,8 +419,8 @@
   padding: 9px 18px;
   border-radius: 8px;
   border: none;
-  background: var(--lt-color);
-  color: #0a0f1a;
+  background: var(--mt-color);
+  color: #071a0f;
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
   font-weight: 700;
@@ -446,11 +428,6 @@
   transition: opacity 150ms;
 
   &:hover { opacity: 0.85; }
-
-  &.btn-save--mentoring {
-    background: var(--mt-color);
-    color: #071a0f;
-  }
 }
 
 

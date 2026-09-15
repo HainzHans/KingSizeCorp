@@ -5,37 +5,36 @@
 >
   <div class="product-card__glow"></div>
 
-  <div style="display: flex; flex-direction: row; gap: 1.5rem;">
-
+  <div class="product-card__left">
     <div class="product-card__icon">
       <i [class]="'pi ' + icon()"></i>
     </div>
-    @if (showInfo()) {
-      <span class="product-card__desc" style="color: red;">
-      Derzeit kein {{ name() }}
-    </span>
-    }
+
+    <div class="product-card__info">
+      <div class="product-card__top">
+        <h3 class="product-card__name">{{ name() }}</h3>
+        @if (badge()) {
+          <div class="product-card__badge">{{ badge() }}</div>
+        }
+      </div>
+
+      <p class="product-card__desc">{{ description() }}</p>
+
+      <ul class="product-card__features">
+        @for (feature of features(); track feature) {
+          <li><i class="pi pi-check-circle"></i> {{ feature }}</li>
+        }
+      </ul>
+    </div>
   </div>
 
-  @if (badge()) {
-    <div class="product-card__badge">{{ badge() }}</div>
-  }
-
-  <h3 class="product-card__name">{{ name() }}</h3>
-  <p class="product-card__desc">{{ description() }}</p>
-
-  <div class="product-card__price">
-    <span class="product-card__price-amount">{{ price() }}</span>
-    <span class="product-card__price-unit">{{ priceUnit() }}</span>
-  </div>
-
-  <ul class="product-card__features">
-    @for (feature of features(); track feature) {
-      <li><i class="pi pi-check-circle"></i> {{ feature }}</li>
-    }
-  </ul>
-
-  <div class="product-card__select-indicator">
-    <i class="pi pi-check"></i>
+  <div class="product-card__right">
+    <div class="product-card__price">
+      <span class="product-card__price-amount">{{ price() }}</span>
+      <span class="product-card__price-unit">{{ priceUnit() }}</span>
+    </div>
+    <div class="product-card__select-indicator">
+      <i class="pi pi-check"></i>
+    </div>
   </div>
 </div>

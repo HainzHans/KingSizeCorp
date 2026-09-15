@@ -47,14 +47,13 @@ export class AdminAppointmentPage implements OnInit {
   editMode   = signal(false);
   loading    = signal(false);
 
-  dialogType:          AppointmentType = 'livetrading';
+  dialogType:          AppointmentType = 'mentoring';
   dialogDate:          Date | null = null;
   dialogTime:          Date | null = null;
   dialogStripePriceId: string | null = null;
   editingId:           string | null = null;
 
   // ── Data ─────────────────────────────────────────────────
-  liveTradingAppointments: Appointment[]       = [];
   mentoringAppointments:   Appointment[]       = [];
   bookedAppointments:      BookedAppointment[] = [];
 
@@ -81,13 +80,11 @@ export class AdminAppointmentPage implements OnInit {
   private async loadAppointments() {
     this.loading.set(true);
     try {
-      const [mentoring, livetrading] = await Promise.all([
+      const [mentoring] = await Promise.all([
         this.appointmentService.getAvailableByType('mentoring'),
-        this.appointmentService.getAvailableByType('livetrading'),
         this.appointmentService.deleteExpired(),
       ]);
-      this.mentoringAppointments   = mentoring;
-      this.liveTradingAppointments = livetrading;
+      this.mentoringAppointments = mentoring;
     } catch {
       this.messageService.add({
         severity: 'error',
@@ -123,8 +120,8 @@ export class AdminAppointmentPage implements OnInit {
   }
 
   // ── Hilfsmethode: Typ-Label ──────────────────────────────
-  typeLabel(type: string): string {
-    return type === 'livetrading' ? 'LiveTrading' : 'Mentoring';
+  typeLabel(_type: string): string {
+    return 'Mentoring';
   }
 
   private getDefaultTime(): Date {
@@ -240,27 +237,15 @@ export class AdminAppointmentPage implements OnInit {
 
   // ── List helpers ─────────────────────────────────────────
   private addToList(appt: Appointment) {
-    if (appt.type === 'livetrading') {
-      this.liveTradingAppointments = [...this.liveTradingAppointments, appt];
-    } else {
-      this.mentoringAppointments = [...this.mentoringAppointments, appt];
-    }
+    this.mentoringAppointments = [...this.mentoringAppointments, appt];
   }
 
   private replaceInList(appt: Appointment) {
-    if (appt.type === 'livetrading') {
-      this.liveTradingAppointments = this.liveTradingAppointments.map(a => a.id === appt.id ? appt : a);
-    } else {
-      this.mentoringAppointments = this.mentoringAppointments.map(a => a.id === appt.id ? appt : a);
-    }
+    this.mentoringAppointments = this.mentoringAppointments.map(a => a.id === appt.id ? appt : a);
   }
 
   private removeFromList(appt: Appointment) {
-    if (appt.type === 'livetrading') {
-      this.liveTradingAppointments = this.liveTradingAppointments.filter(a => a.id !== appt.id);
-    } else {
-      this.mentoringAppointments = this.mentoringAppointments.filter(a => a.id !== appt.id);
-    }
+    this.mentoringAppointments = this.mentoringAppointments.filter(a => a.id !== appt.id);
   }
 
   // ── Getter ───────────────────────────────────────────────
